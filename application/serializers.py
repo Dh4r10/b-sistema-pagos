@@ -12,15 +12,16 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['username'] = user.username
         # get perfil
+        token['username'] = user.ruta_fotografia
         # Obtén el perfil asociado al usuario
         tipo_usuario = user.tipo_usuario
 
         # Si el perfil existe, obtén su idperfil
         if tipo_usuario:
-            token['id'] = tipo_usuario.id
+            token['id_tipo_usuario'] = tipo_usuario.id
         else:
             # Si no hay perfil asociado, puedes manejarlo como desees
-            token['id'] = None
+            token['id_tipo_usuario'] = None
         # ...
 
         return token
