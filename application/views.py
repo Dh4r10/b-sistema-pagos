@@ -16,8 +16,8 @@ class TipoUsuarioViewSet(viewsets.ModelViewSet):
 class AuthUserViewSet(viewsets.ModelViewSet):
     queryset = AuthUser.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        # IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = AuthUserSerializer
 

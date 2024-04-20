@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 # Create your models here.
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=50, unique=True, null=False)
@@ -12,7 +11,6 @@ class TipoUsuario(models.Model):
         db_table = 'tipo_usuario'
 
 class AuthUser(AbstractUser):
-   
     id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario' ,default=None)
     ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
     nombres = models.CharField(max_length=50, null=False)
@@ -35,7 +33,6 @@ class AuthUser(AbstractUser):
     groups = None
     user_permissions = None
     date_joined = None
-
 
 #Tabla de Modulos
 class Modulos(models.Model):
