@@ -11,6 +11,8 @@ from application import views
 router = routers.DefaultRouter()
 router.register('api/tipo_usuario', views.TipoUsuarioViewSet, basename='tipo_usuario')
 router.register('api/usuario', views.AuthUserViewSet, basename='usuario')
+router.register('api/modulos', views.ModulosViewSet, basename='modulos')
+router.register('api/permisos', views.PermisosViewSet, basename='permisos')
 
 urlpatterns = [
     path('', include(router.urls)),

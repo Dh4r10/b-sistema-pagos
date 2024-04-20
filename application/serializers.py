@@ -34,7 +34,10 @@ class TipoUsuarioSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AuthUserSerializer(serializers.ModelSerializer):
-    class Meta:
+    id_tipo_usuario = serializers.PrimaryKeyRelatedField(queryset=TipoUsuario.objects.all(), write_only=True)
+    tipo_usuario = TipoUsuarioSerializer(source='id_tipo_usuario', read_only=True)
+
+    class Meta:     
         model = AuthUser
         fields = ('__all__')
 
@@ -46,3 +49,19 @@ class AuthUserSerializer(serializers.ModelSerializer):
         id = validated_data.get('id')
 
         return super().create(validated_data)
+    
+#Tabla modulos
+class ModulosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Modulos
+        fields= '__all__' 
+#Tabla permisos
+class PermisosSerializer(serializers.ModelSerializer):
+    id_tipo_usuario = serializers.PrimaryKeyRelatedField(queryset=TipoUsuario.objects.all(), write_only=True)
+    tipo_usuario = TipoUsuarioSerializer(source='id_tipo_usuario', read_only=True)
+    id_modulos= serializers.PrimaryKeyRelatedField(queryset=Modulos.objects.all(), write_only=True)
+    modulos = ModulosSerializer(source='id_modulos', read_only=True)
+
+    class Meta:
+        model=Permisos
+        fields='__all__'
