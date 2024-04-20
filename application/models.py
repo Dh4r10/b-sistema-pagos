@@ -37,8 +37,6 @@ class AuthUser(AbstractUser):
     date_joined = None
 
 
-
-
 #Tabla de Modulos
 class Modulos(models.Model):
     nombre= models.CharField(max_length=50)
@@ -60,3 +58,19 @@ class Permisos(models.Model):
 
     class Meta:
         db_table="permisos"
+
+#VISTAS
+
+class UsuariosActivos(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    codigo = models.CharField(max_length=150)
+    usuario = models.CharField(max_length=112)
+    tipo = models.CharField(max_length=50)
+    email = models.CharField(max_length=254)
+    ult_ingreso = models.CharField(max_length=27)
+    ult_cierre = models.CharField(max_length=27)
+
+
+    class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
+        db_table = 'usuarios_activos'

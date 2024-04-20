@@ -14,11 +14,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # get perfil
         token['ruta_fotografica'] = user.ruta_fotografia
         # Obtén el perfil asociado al usuario
-        tipo_usuario = user.tipo_usuario
+        id_tipo_usuario = user.id_tipo_usuario
 
         # Si el perfil existe, obtén su idperfil
-        if tipo_usuario:
-            token['id_tipo_usuario'] = tipo_usuario.id
+        if id_tipo_usuario:
+            token['id_tipo_usuario'] = id_tipo_usuario.id
         else:
             # Si no hay perfil asociado, puedes manejarlo como desees
             token['id_tipo_usuario'] = None
@@ -65,3 +65,9 @@ class PermisosSerializer(serializers.ModelSerializer):
     class Meta:
         model=Permisos
         fields='__all__'
+
+#Vista usuarios activos
+class UsuariosActivosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=UsuariosActivos
+        fields= '__all__' 
