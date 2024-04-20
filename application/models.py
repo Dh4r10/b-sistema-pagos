@@ -1,19 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 # Create your models here.
+class TipoUsuario(models.Model):
+    nombre = models.CharField(max_length=50, unique=True, null=False)
+    descripcion = models.CharField(max_length=100, null=False)
+    estado = models.BooleanField(default=True, null=False)
+
+    class Meta:
+        db_table = 'tipo_usuario'
 
 class AuthUser(AbstractUser):
-    tipo_usuario = models.ForeignKey(
-        'TipoUsuario',  
-        on_delete=models.CASCADE,
-        related_name='tipo_usuario',
-        blank=False,
-        null=False,
-        default=2,
-        db_column='id_tipo_usuario'
-    )
-
+   
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario' ,default=None)
     ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
     nombres = models.CharField(max_length=50, null=False)
     apellido_paterno = models.CharField(max_length=30, null=False)
@@ -36,10 +36,27 @@ class AuthUser(AbstractUser):
     user_permissions = None
     date_joined = None
 
-class TipoUsuario(models.Model):
-    nombre = models.CharField(max_length=50, unique=True, null=False)
-    descripcion = models.CharField(max_length=100, null=False)
-    estado = models.BooleanField(default=True, null=False)
+
+
+
+#Tabla de Modulos
+class Modulos(models.Model):
+    nombre= models.CharField(max_length=50)
+    descripcion=models.CharField(max_length=100)
+    estado= models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'tipo_usuario'
+        db_table ="modulos"
+
+#Tabla de Perimisos
+
+class Permisos(models.Model):
+    nombre=models.CharField(max_length=50)
+    descripcion=models.CharField(max_length=100)
+    estado=models.BooleanField(default=True)
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario')
+    id_modulos= models.ForeignKey(Modulos, models.DO_NOTHING, db_column="id_modulos", null=True)
+
+
+    class Meta:
+        db_table="permisos"
