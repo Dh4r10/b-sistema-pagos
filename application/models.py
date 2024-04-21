@@ -11,21 +11,21 @@ class TipoUsuario(models.Model):
         db_table = 'tipo_usuario'
 
 class AuthUser(AbstractUser):
-    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario' ,default=None)
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', null=False, blank=True)
     ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
-    nombres = models.CharField(max_length=50, null=False)
-    apellido_paterno = models.CharField(max_length=30, null=False)
-    apellido_materno = models.CharField(max_length=30, null=False)
-    dni = models.CharField(max_length=8, null=False)
-    celular = models.CharField(max_length=9, null=False)
-    domicilio = models.CharField(max_length=50, null=False)
-    sexo = models.CharField(max_length=20, null=False)
-    fecha_nacimiento = models.DateField(default=None, null=False, blank=False)
+    nombres = models.CharField(max_length=50, null=False, blank=True)
+    apellido_paterno = models.CharField(max_length=30, null=False, blank=True)
+    apellido_materno = models.CharField(max_length=30, null=False, blank=True)
+    dni = models.CharField(max_length=8, null=False, blank=True)
+    celular = models.CharField(max_length=9, null=False, blank=True)
+    domicilio = models.CharField(max_length=50, null=False, blank=True)
+    sexo = models.CharField(max_length=20, null=False, blank=True)
+    fecha_nacimiento = models.DateField(null=False, blank=True)
     fecha_creacion = models.DateField(auto_now_add=True, null=False)
-    ultimo_ingreso_fecha = models.DateField(default=None)
-    ultimo_ingreso_hora = models.TimeField(default=None)
-    ultimo_cierre_fecha = models.DateField(default=None)
-    ultimo_cierre_hora = models.TimeField(default=None)
+    ultimo_ingreso_fecha = models.DateField(default=None, null=True, blank=False)
+    ultimo_ingreso_hora = models.TimeField(default=None, null=True, blank=False)
+    ultimo_cierre_fecha = models.DateField(default=None, null=True, blank=False)
+    ultimo_cierre_hora = models.TimeField(default=None ,null=True, blank=False)
     # Añade estos atributos para evitar el conflicto con los atributos de AbstractUser
     last_login = None
     first_name = None
@@ -62,10 +62,15 @@ class UsuariosActivos(models.Model):
     id = models.BigIntegerField(primary_key=True)
     codigo = models.CharField(max_length=150)
     usuario = models.CharField(max_length=112)
+    id_tipo_usuario = models.BigIntegerField()
     tipo = models.CharField(max_length=50)
     email = models.CharField(max_length=254)
-    ult_ingreso = models.CharField(max_length=27)
-    ult_cierre = models.CharField(max_length=27)
+    username = models.CharField(max_length=150)
+    password = models.CharField(max_length=128)
+    ultimo_ingreso_fecha = models.DateField()
+    ultimo_ingreso_hora = models.TimeField()
+    ultimo_cierre_fecha = models.DateField()
+    ultimo_cierre_hora = models.TimeField()
 
 
     class Meta:
