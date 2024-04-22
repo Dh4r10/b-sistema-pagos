@@ -24,16 +24,16 @@ class AuthUserViewSet(viewsets.ModelViewSet):
 class PermisosViewSet(viewsets.ModelViewSet):
     queryset = Permisos.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        # IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = PermisosSerializer
 
 class ModulosViewSet(viewsets.ModelViewSet):
     queryset = Modulos.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        # IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = ModulosSerializer
 

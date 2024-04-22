@@ -11,7 +11,7 @@ class TipoUsuario(models.Model):
         db_table = 'tipo_usuario'
 
 class AuthUser(AbstractUser):
-    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', null=False, blank=True)
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', default=None, null=False, blank=True)
     ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
     nombres = models.CharField(max_length=50, null=False, blank=True)
     apellido_paterno = models.CharField(max_length=30, null=False, blank=True)
@@ -36,9 +36,9 @@ class AuthUser(AbstractUser):
 
 #Tabla de Modulos
 class Modulos(models.Model):
-    nombre= models.CharField(max_length=50)
-    descripcion=models.CharField(max_length=100)
-    estado= models.BooleanField(default=True)
+    nombre= models.CharField(max_length=50, unique=True, null=False, blank=True)
+    descripcion=models.CharField(max_length=100, null=False, blank=True)
+    estado= models.BooleanField(default=True, null=False)
 
     class Meta:
         db_table ="modulos"
@@ -46,12 +46,11 @@ class Modulos(models.Model):
 #Tabla de Perimisos
 
 class Permisos(models.Model):
-    nombre=models.CharField(max_length=50)
-    descripcion=models.CharField(max_length=100)
-    estado=models.BooleanField(default=True)
-    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario')
-    id_modulos= models.ForeignKey(Modulos, models.DO_NOTHING, db_column="id_modulos", null=True)
-
+    nombre=models.CharField(max_length=50, null=False, blank=True)
+    descripcion=models.CharField(max_length=100, null=False, blank=True)
+    estado=models.BooleanField(default=True, null=False)
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario',default=None, null=False, blank=True)
+    id_modulos= models.ForeignKey(Modulos, models.DO_NOTHING, db_column="id_modulos", default=None, null=False, blank=True)
 
     class Meta:
         db_table="permisos"
@@ -71,7 +70,7 @@ class UsuariosActivos(models.Model):
     ultimo_ingreso_hora = models.TimeField()
     ultimo_cierre_fecha = models.DateField()
     ultimo_cierre_hora = models.TimeField()
-
+    is_active = models.BooleanField()
 
     class Meta:
         managed = False  # Indica a Django que no debe crear una tabla para este modelo
