@@ -49,6 +49,7 @@ class UsuariosActivosViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = UsuariosActivosSerializer
+#Para enviar el correo 
 
 @api_view(['POST'])
 def send_reset_password_email(request):
@@ -64,13 +65,13 @@ def send_reset_password_email(request):
 
         # ver la contraseña
         print(user)
-
         # enviar correo al usuario
         send_email(
             subject='Reset password', # title
-            html_content='''
-                <h1>Reset password</h1>
-                <p>Click <a href="http://localhost:5173/login/restore">here</a> to reset your password</p>
+            html_content='''    
+                <h1>I.E.P "CIENCIAS"</h1>
+                <h2>Seguridad y gestión de datos de calidad</h2>
+                <a href="http://localhost:5173/login/update/"><Button>REESTABLECER CONTRASEÑA</Button></a>
                 ''',
             to_email=email # list of 
         ) 
@@ -83,15 +84,18 @@ def send_reset_password_email(request):
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+#Para actualizar contraseña 
 @api_view(['POST'])
 def restore_password(request):
     # el correo del usuario
-    email = request.data.get('email')
+    username = request.data.get('username')
     password = request.data.get('password') # nueva contraseña
 
     try:
         # buscar el usuario
-        user = AuthUser.objects.get(email=email)
+        user = AuthUser.objects.get(username=username)
+        #Se obtiene el email del usuario encontrado
+        email=user.email
         
         if not user.is_active:
             return Response({'message': 'User is not active'}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,8 +108,8 @@ def restore_password(request):
         send_email(
             subject='Password changed', # title
             html_content='''
-                <h1>Password changed</h1>
-                <p>Your password has been changed</p>
+                <h1>Tu contraseña a sido actualizada</h1>
+                <p>Actulización Correcta </p>
                 ''',
             to_email=email # list of 
         )
