@@ -22,10 +22,15 @@ class AuthUser(AbstractUser):
     sexo = models.CharField(max_length=20, null=False, blank=True)
     fecha_nacimiento = models.DateField(null=False, blank=True)
     fecha_creacion = models.DateField(auto_now_add=True, null=False)
+
     ultimo_ingreso_fecha = models.DateField(default=None, null=True, blank=False)
     ultimo_ingreso_hora = models.TimeField(default=None, null=True, blank=False)
     ultimo_cierre_fecha = models.DateField(default=None, null=True, blank=False)
     ultimo_cierre_hora = models.TimeField(default=None ,null=True, blank=False)
+
+    # si el usuario hace un segundo Login
+    # session_id_active = models.CharField(max_length=100, null=True, blank=True) # uuid => a1b2c3d4-1234-5678-1234-56781234567 
+    
     # Añade estos atributos para evitar el conflicto con los atributos de AbstractUser
     last_login = None
     first_name = None
@@ -33,6 +38,8 @@ class AuthUser(AbstractUser):
     groups = None
     user_permissions = None
     date_joined = None
+
+
 
 #Tabla de Modulos
 class Modulos(models.Model):
