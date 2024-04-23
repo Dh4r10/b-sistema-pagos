@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='authuser',
             name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, unique=True),
+            field=models.UUIDField(default=uuid.uuid4, null=True),
         ),
     ]
