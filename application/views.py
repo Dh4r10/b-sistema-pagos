@@ -65,13 +65,16 @@ def send_reset_password_email(request):
 
         # ver la contraseña
         print(user)
+        uuid_user = user.uuid
+
+        reset_password_url = f"http://localhost:5173/login/update/{uuid_user}"
         # enviar correo al usuario
         send_email(
             subject='Reset password', # title
-            html_content='''    
+            html_content=f'''    
                 <h1>I.E.P "CIENCIAS"</h1>
                 <h2>Seguridad y gestión de datos de calidad</h2>
-                <a href="http://localhost:5173/login/update/"><Button>REESTABLECER CONTRASEÑA</Button></a>
+                <a href="{reset_password_url}"><Button>REESTABLECER CONTRASEÑA</Button></a>
                 ''',
             to_email=email # list of 
         ) 
@@ -90,15 +93,25 @@ def restore_password(request):
     # el correo del usuario
     username = request.data.get('username')
     password = request.data.get('password') # nueva contraseña
-
+    uuid_user = request.data.get('uuid')
+    
     try:
         # buscar el usuario
         user = AuthUser.objects.get(username=username)
         #Se obtiene el email del usuario encontrado
         email=user.email
-        
+        userBack=str(user.uuid)
+
+        print("front:", uuid_user)
+        print("back:", userBack)
+
         if not user.is_active:
             return Response({'message': 'User is not active'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if userBack!=uuid_user:
+            print("No coincide 2")
+            return Response({'message': 'El uuid no coincide'}, status=status.HTTP_400_BAD_REQUEST)
+            
 
         # cambiar la contraseña
         user.set_password(password)
