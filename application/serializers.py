@@ -55,6 +55,7 @@ class ModulosSerializer(serializers.ModelSerializer):
     class Meta:
         model=Modulos
         fields= '__all__' 
+        
 #Tabla permisos
 class PermisosSerializer(serializers.ModelSerializer):
     id_tipo_usuario = serializers.PrimaryKeyRelatedField(queryset=TipoUsuario.objects.all(), write_only=True)
