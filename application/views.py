@@ -49,6 +49,7 @@ class UsuariosActivosViewSet(viewsets.ModelViewSet):
         # permissions.AllowAny,
     ]
     serializer_class = UsuariosActivosSerializer
+#Para enviar el correo 
 
 @api_view(['POST'])
 def send_reset_password_email(request):
@@ -64,37 +65,53 @@ def send_reset_password_email(request):
 
         # ver la contraseña
         print(user)
+        uuid_user = user.uuid
 
+        reset_password_url = f"http://localhost:5173/login/update/{uuid_user}"
         # enviar correo al usuario
         send_email(
             subject='Reset password', # title
-            html_content='''
-                <h1>Reset password</h1>
-                <p>Click <a href="http://localhost:5173/login/restore">here</a> to reset your password</p>
+            html_content=f'''    
+                <h1>I.E.P "CIENCIAS"</h1>
+                <h2>Seguridad y gestión de datos de calidad</h2>
+                <a href="{reset_password_url}"><Button>REESTABLECER CONTRASEÑA</Button></a>
                 ''',
             to_email=email # list of 
         ) 
 
-        return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
+        return Response({'message': 'E-MAIL ENVIADO'}, status=status.HTTP_200_OK)
     
-    # except AuthUser.DoesNotExist:
-    #     return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except AuthUser.DoesNotExist:
+        return Response({'message': 'E-MAIL NOT FOUND'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+#Para actualizar contraseña 
 @api_view(['POST'])
 def restore_password(request):
     # el correo del usuario
-    email = request.data.get('email')
+    username = request.data.get('username')
     password = request.data.get('password') # nueva contraseña
-
+    uuid_user = request.data.get('uuid')
+    
     try:
         # buscar el usuario
-        user = AuthUser.objects.get(email=email)
-        
+        user = AuthUser.objects.get(username=username)
+        #Se obtiene el email del usuario encontrado
+        email=user.email
+        userBack=str(user.uuid)
+
+        print("front:", uuid_user)
+        print("back:", userBack)
+
         if not user.is_active:
             return Response({'message': 'User is not active'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if userBack!=uuid_user:
+            print("No coincide 2")
+            return Response({'message': 'ID INCORRECTO'}, status=status.HTTP_400_BAD_REQUEST)
+            
 
         # cambiar la contraseña
         user.set_password(password)
@@ -104,8 +121,8 @@ def restore_password(request):
         send_email(
             subject='Password changed', # title
             html_content='''
-                <h1>Password changed</h1>
-                <p>Your password has been changed</p>
+                <h1>Tu contraseña a sido actualizada</h1>
+                <p>Actulización Correcta </p>
                 ''',
             to_email=email # list of 
         )
