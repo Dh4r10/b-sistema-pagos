@@ -79,10 +79,10 @@ def send_reset_password_email(request):
             to_email=email # list of 
         ) 
 
-        return Response({'message': 'Email sent'}, status=status.HTTP_200_OK)
+        return Response({'message': 'E-MAIL ENVIADO'}, status=status.HTTP_200_OK)
     
-    # except AuthUser.DoesNotExist:
-    #     return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except AuthUser.DoesNotExist:
+        return Response({'message': 'E-MAIL NOT FOUND'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -110,7 +110,7 @@ def restore_password(request):
         
         if userBack!=uuid_user:
             print("No coincide 2")
-            return Response({'message': 'El uuid no coincide'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'ID INCORRECTO'}, status=status.HTTP_400_BAD_REQUEST)
             
 
         # cambiar la contraseña
