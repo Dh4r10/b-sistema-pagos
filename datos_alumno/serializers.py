@@ -29,3 +29,17 @@ class AlumnoFamiliarSerializer(serializers.ModelSerializer):
         model=AlumnoFamiliar
         fields='__all__'
 
+class EstudiantesActivosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=EstudiantesActivos
+        fields= '__all__'
+
+class EstudiantesEliminadosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=EstudiantesEliminados
+        fields= '__all__'
+
+class EstudiantesSolicitudEliminacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=EstudiantesSolicitudEliminacion
+        fields= '__all__'

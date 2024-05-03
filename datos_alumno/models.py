@@ -86,3 +86,43 @@ class AlumnoFamiliar(models.Model):
 
     class Meta:
         db_table = "alumno_x_familiar"
+
+class EstudiantesActivos(models.Model):
+    id = models.AutoField(primary_key=True)
+    codigo = models.CharField(max_length=8)
+    estado = models.BooleanField()
+    alumno = models.CharField(max_length=152)
+    beneficio = models.CharField(max_length=20)
+    turno = models.CharField(max_length=15)
+    grado = models.CharField(max_length=15)
+    seccion = models.CharField(max_length=15)
+
+    class Meta:
+        db_table = "estudiantes_activos"
+
+class EstudiantesEliminados(models.Model):
+    id = models.AutoField(primary_key=True)
+    codigo = models.CharField(max_length=8)
+    estado = models.BooleanField()
+    alumno = models.CharField(max_length=152)
+    beneficio = models.CharField(max_length=20)
+    turno = models.CharField(max_length=15)
+    grado = models.CharField(max_length=15)
+    seccion = models.CharField(max_length=15)
+
+    class Meta:
+        db_table = "estudiantes_eliminados"
+
+class EstudiantesSolicitudEliminacion(models.Model):
+    id = models.AutoField(primary_key=True)
+    codigo = models.CharField(max_length=8)
+    estado = models.BooleanField()
+    alumno = models.CharField(max_length=152)
+    beneficio = models.CharField(max_length=20)
+    turno = models.CharField(max_length=15)
+    grado = models.CharField(max_length=15)
+    seccion = models.CharField(max_length=15)
+
+    class Meta:
+        db_table = "estudiantes_en_solicitud_eliminacion"
+

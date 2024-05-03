@@ -34,3 +34,27 @@ class AlumnoFamiliarViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = AlumnoFamiliarSerializer
+
+class EstudiantesActivosViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = EstudiantesActivos.objects.all()
+    permission_classes = [
+        # IsAuthenticated,
+        permissions.AllowAny,
+    ]
+    serializer_class = EstudiantesActivosSerializer
+
+class EstudiantesEliminadosViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = EstudiantesEliminados.objects.all()
+    permission_classes = [
+        # IsAuthenticated,
+        permissions.AllowAny,
+    ]
+    serializer_class = EstudiantesEliminadosSerializer
+
+class EstudiantesSolicitudEliminacionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = EstudiantesSolicitudEliminacion.objects.all()
+    permission_classes = [
+        # IsAuthenticated,
+        permissions.AllowAny,
+    ]
+    serializer_class = EstudiantesSolicitudEliminacionSerializer
