@@ -3,6 +3,7 @@ from .models import *
 from .models import AuthUser # Asegúrate de importar tu modelo personalizado
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -72,3 +73,21 @@ class UsuariosActivosSerializer(serializers.ModelSerializer):
     class Meta:
         model=UsuariosActivos
         fields= '__all__' 
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    default_error_messages = {
+        'bad_token':('Token is expired')
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+
+        return attrs
+    
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except RecursionError:
+            self.fail('bad token')
