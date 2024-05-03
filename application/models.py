@@ -68,14 +68,13 @@ class UsuariosActivos(models.Model):
     usuario = models.CharField(max_length=112)
     id_tipo_usuario = models.BigIntegerField()
     tipo = models.CharField(max_length=50)
-    email = models.CharField(max_length=254)
+    correo = models.CharField(max_length=254)
     username = models.CharField(max_length=150)
     password = models.CharField(max_length=128)
-    ultimo_ingreso_fecha = models.DateField()
-    ultimo_ingreso_hora = models.TimeField()
-    ultimo_cierre_fecha = models.DateField()
-    ultimo_cierre_hora = models.TimeField()
-    is_active = models.BooleanField()
+    fecha_inicio = models.DateField()
+    hora_inicio = models.CharField(max_length=13)
+    fecha_cierre = models.DateField()
+    hora_cierre = models.CharField(max_length=13)
 
     class Meta:
         managed = False  # Indica a Django que no debe crear una tabla para este modelo
