@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'application',
     'datos_alumno',
+    'mantenimiento',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
@@ -187,6 +188,6 @@ AUTH_USER_MODEL = 'application.AuthUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = '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'
 
 DEFAULT_FROM_EMAIL= 'MARZCHELO1@GMAIL.COM'

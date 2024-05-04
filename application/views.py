@@ -13,8 +13,8 @@ from django.utils import timezone
 class TipoUsuarioViewSet(viewsets.ModelViewSet):
     queryset = TipoUsuario.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        #IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = TipoUsuarioSerializer
 
