@@ -8,3 +8,16 @@ class ConfiguracionViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class=ConfiguracionSerializer
+
+class MesesManteniminetoViewSet(viewsets.ModelViewSet):
+    queryset=MesesMantenimiento.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=MesesMantenimientoSerializer
+class AreaMantenimientoViewSet(viewsets.ModelViewSet):
+    queryset=AreaMantenimiento.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=AreaMantenimientoSerializar
