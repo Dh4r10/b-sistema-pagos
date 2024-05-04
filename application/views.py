@@ -45,8 +45,8 @@ class ModulosViewSet(viewsets.ModelViewSet):
 class UsuariosActivosViewSet(viewsets.ModelViewSet):
     queryset = UsuariosActivos.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        # IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = UsuariosActivosSerializer
 #Para enviar el correo 
