@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'application',
+    'datos_alumno',
+    'mantenimiento',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
     'corsheaders',
 ]
@@ -54,7 +57,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": False,
+    "UPDATE_LAST_LOGIN": True,
 
     "ALGORITHM": "HS256",
     "VERIFYING_KEY": "",
@@ -185,6 +188,6 @@ AUTH_USER_MODEL = 'application.AuthUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = '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'
 
 DEFAULT_FROM_EMAIL= 'MARZCHELO1@GMAIL.COM'
