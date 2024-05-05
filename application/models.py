@@ -4,9 +4,9 @@ import uuid
 
 # Create your models here.
 class TipoUsuario(models.Model):
-    nombre = models.CharField(max_length=50, unique=True, null=False)
-    descripcion = models.CharField(max_length=100, null=False)
-    estado = models.BooleanField(default=True, null=False)
+    nombre = models.CharField(max_length=50, unique=True, null=False, blank=True)
+    descripcion = models.CharField(max_length=100, null=False, blank=True)
+    estado = models.BooleanField(default=True, null=False, blank=True)
 
     class Meta:
         db_table = 'tipo_usuario'
@@ -26,23 +26,18 @@ class AuthUser(AbstractUser):
     fecha_nacimiento = models.DateField(null=False, blank=True)
     fecha_creacion = models.DateField(auto_now_add=True, null=False)
 
-    ultimo_ingreso_fecha = models.DateField(default=None, null=True, blank=False)
-    ultimo_ingreso_hora = models.TimeField(default=None, null=True, blank=False)
-    ultimo_cierre_fecha = models.DateField(default=None, null=True, blank=False)
-    ultimo_cierre_hora = models.TimeField(default=None ,null=True, blank=False)
+    last_logout = models.DateTimeField(default=None, null=True, blank=False)
 
     # si el usuario hace un segundo Login
     # session_id_active = models.CharField(max_length=100, null=True, blank=True) # uuid => a1b2c3d4-1234-5678-1234-56781234567 
     
     # Añade estos atributos para evitar el conflicto con los atributos de AbstractUser
-    last_login = None
+    # last_login = None
     first_name = None
     last_name = None
     groups = None
     user_permissions = None
     date_joined = None
-
-
 
 #Tabla de Modulos
 class Modulos(models.Model):
@@ -73,14 +68,13 @@ class UsuariosActivos(models.Model):
     usuario = models.CharField(max_length=112)
     id_tipo_usuario = models.BigIntegerField()
     tipo = models.CharField(max_length=50)
-    email = models.CharField(max_length=254)
+    correo = models.CharField(max_length=254)
     username = models.CharField(max_length=150)
     password = models.CharField(max_length=128)
-    ultimo_ingreso_fecha = models.DateField()
-    ultimo_ingreso_hora = models.TimeField()
-    ultimo_cierre_fecha = models.DateField()
-    ultimo_cierre_hora = models.TimeField()
-    is_active = models.BooleanField()
+    fecha_inicio = models.DateField()
+    hora_inicio = models.CharField(max_length=13)
+    fecha_cierre = models.DateField()
+    hora_cierre = models.CharField(max_length=13)
 
     class Meta:
         managed = False  # Indica a Django que no debe crear una tabla para este modelo

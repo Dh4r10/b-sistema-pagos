@@ -23,4 +23,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/send-reset-password', views.send_reset_password_email, name='reset_password'),
     path('api/reset-password', views.restore_password, name='reset_password'),
+    path('api/update_last_logout', views.update_last_logout, name='update_last_logout'),
+    path('api/logout', LogoutAPIView.as_view(), name='logout')
 ]
