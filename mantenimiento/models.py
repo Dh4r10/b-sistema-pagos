@@ -10,4 +10,24 @@ class Confirguracion(models.Model):
     class Meta:
         db_table="configuracion"
 
+#Filtro de meses por mantenimiento
+class MesesMantenimiento(models.Model):
+    tabla=models.CharField(max_length=30)
+    nombre=models.CharField(max_length=30)
+    descripcion=models.CharField(max_length=100)
+    estado=models.BooleanField(default=True)
+    class Meta:
+        db_table="meses_mantenimiento"
+class AreaMantenimiento(models.Model):
+    tabla=models.CharField(max_length=30)
+    nombre=models.CharField(max_length=30)
+    descripcion=models.CharField(max_length=100)
+    estado=models.BooleanField(default=True)
+    class Meta:
+        db_table="area_mantenimiento"
+    
+   
+
+
+
 
