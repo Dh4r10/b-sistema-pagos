@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'datos_alumno',
     'mantenimiento',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
+    # 'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
     'corsheaders',
 ]
@@ -56,7 +56,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
+    "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
 
     "ALGORITHM": "HS256",
@@ -131,13 +131,22 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
 
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'sistema_pagos_unidad_1',
+    #     'USER': 'root',
+    #     'PASSWORD': '12345678',
+    #     'HOST': 'servidor-jami.clwiks6ew97v.us-east-2.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
+    #     'PORT': '3320',       # El puerto predeterminado de MySQL/MariaDB
+    # }
+
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sistema_pagos_unidad_1',
         'USER': 'root',
-        'PASSWORD': '12345678',
-        'HOST': 'servidor-jami.clwiks6ew97v.us-east-2.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
-        'PORT': '3320',       # El puerto predeterminado de MySQL/MariaDB
+        'PASSWORD': '1234',
+        'HOST': 'localhost',  # O la dirección de tu servidor MariaDB
+        'PORT': '3307',       # El puerto predeterminado de MySQL/MariaDB
     }
 }
 

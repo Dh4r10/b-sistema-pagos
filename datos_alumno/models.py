@@ -24,7 +24,7 @@ class Familiar(models.Model):
     provincia_nacimiento = models.CharField(max_length=30, null=False, blank=True)
     distrito_nacimiento = models.CharField(max_length=30, null=False, blank=False)
     fecha_nacimiento = models.DateField(null=False, blank=True)
-    estado_civil = models.DateField(max_length=10, null=False, blank=True)
+    estado_civil = models.CharField(max_length=10, null=False, blank=True)
     vive = models.BooleanField(default=True, null=False, blank=True)
     vive_con = models.BooleanField(default=True, null=False, blank=True)
     apoderado = models.BooleanField(default=True, null=False, blank=True)

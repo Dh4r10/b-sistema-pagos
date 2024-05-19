@@ -173,17 +173,17 @@ def update_last_logout(request):
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class LogoutAPIView(generics.GenericAPIView):
-    serializer_class=LogoutSerializer
+# class LogoutAPIView(generics.GenericAPIView):
+#     serializer_class=LogoutSerializer
 
-    permission_classes = [
-        # IsAuthenticated,
-        permissions.AllowAny,
-    ]
+#     permission_classes = [
+#         # IsAuthenticated,
+#         permissions.AllowAny,
+#     ]
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+#     def post(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#         return Response(status=status.HTTP_204_NO_CONTENT)
