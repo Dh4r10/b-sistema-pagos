@@ -131,22 +131,13 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
 
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'sistema_pagos_unidad_1',
-    #     'USER': 'root',
-    #     'PASSWORD': '12345678',
-    #     'HOST': 'servidor-jami.clwiks6ew97v.us-east-2.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
-    #     'PORT': '3320',       # El puerto predeterminado de MySQL/MariaDB
-    # }
-
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_pagos_unidad_1',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',  # O la dirección de tu servidor MariaDB
-        'PORT': '3307',       # El puerto predeterminado de MySQL/MariaDB
+        'NAME': 'sistema_educativo_pagos',
+        'USER': 'admin',
+        'PASSWORD': '12345678',
+        'HOST': 'jawni-projects.cla64guqgekz.us-east-1.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
+        'PORT': '3321',       # El puerto predeterminado de MySQL/MariaDB
     }
 }
 

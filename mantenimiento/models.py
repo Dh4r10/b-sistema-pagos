@@ -17,13 +17,16 @@ class MesesMantenimiento(models.Model):
     descripcion=models.CharField(max_length=100)
     estado=models.BooleanField(default=True)
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table="meses_mantenimiento"
+        
 class AreaMantenimiento(models.Model):
     tabla=models.CharField(max_length=30)
     nombre=models.CharField(max_length=30)
     descripcion=models.CharField(max_length=100)
     estado=models.BooleanField(default=True)
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table="area_mantenimiento"
     
    

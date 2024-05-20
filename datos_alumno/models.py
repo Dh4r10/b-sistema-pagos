@@ -98,6 +98,7 @@ class EstudiantesActivos(models.Model):
     seccion = models.CharField(max_length=15)
 
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = "estudiantes_activos"
 
 class EstudiantesEliminados(models.Model):
@@ -111,6 +112,7 @@ class EstudiantesEliminados(models.Model):
     seccion = models.CharField(max_length=15)
 
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = "estudiantes_eliminados"
 
 class EstudiantesSolicitudEliminacion(models.Model):
@@ -124,5 +126,6 @@ class EstudiantesSolicitudEliminacion(models.Model):
     seccion = models.CharField(max_length=15)
 
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = "estudiantes_en_solicitud_eliminacion"
 
