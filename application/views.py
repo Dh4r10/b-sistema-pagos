@@ -26,7 +26,6 @@ class AuthUserViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = AuthUserSerializer
 
-
 class PermisosViewSet(viewsets.ModelViewSet):
     queryset = Permisos.objects.all()
     permission_classes = [
