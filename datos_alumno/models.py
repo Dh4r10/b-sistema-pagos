@@ -90,7 +90,7 @@ class AlumnoFamiliar(models.Model):
 class EstudiantesActivos(models.Model):
     id = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=8)
-    estado = models.BooleanField()
+    deuda = models.BooleanField()
     alumno = models.CharField(max_length=152)
     beneficio = models.CharField(max_length=20)
     turno = models.CharField(max_length=15)
@@ -104,7 +104,7 @@ class EstudiantesActivos(models.Model):
 class EstudiantesEliminados(models.Model):
     id = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=8)
-    estado = models.BooleanField()
+    deuda = models.BooleanField()
     alumno = models.CharField(max_length=152)
     beneficio = models.CharField(max_length=20)
     turno = models.CharField(max_length=15)
@@ -118,7 +118,7 @@ class EstudiantesEliminados(models.Model):
 class EstudiantesSolicitudEliminacion(models.Model):
     id = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=8)
-    estado = models.BooleanField()
+    deuda = models.BooleanField()
     alumno = models.CharField(max_length=152)
     beneficio = models.CharField(max_length=20)
     turno = models.CharField(max_length=15)
