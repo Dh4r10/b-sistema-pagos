@@ -16,6 +16,13 @@ class MesesMantenimientoViewSet(viewsets.ModelViewSet):
     ]
     serializer_class=MesesMantenimientoSerializer
 
+class AreaMantenimientoViewSet(viewsets.ModelViewSet):
+    queryset=AreaMantenimiento.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=AreaMantenimientoSerializer
+
 class MetodoPagoMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=MetodoPagoMantenimiento.objects.all()
     permission_classes=[
@@ -44,12 +51,12 @@ class SeccionMantenimientoViewSet(viewsets.ModelViewSet):
     ]
     serializer_class=SeccionMantenimientoSerializer
 
-class AreaMantenimientoViewSet(viewsets.ModelViewSet):
-    queryset=AreaMantenimiento.objects.all()
+class ConfirmacionMantenimientoViewSet(viewsets.ModelViewSet):
+    queryset=ConfirmacionMantenimiento.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=AreaMantenimientoSerializer
+    serializer_class=ConfirmacionMantenimientoSerializer
 
 class SexoMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=SexoMantenimiento.objects.all()
@@ -57,3 +64,10 @@ class SexoMantenimientoViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class=SexoMantenimientoSerializer
+
+class TurnoMantenimientoViewSet(viewsets.ModelViewSet):
+    queryset=TurnoMantenimiento.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=TurnoMantenimientoSerializer

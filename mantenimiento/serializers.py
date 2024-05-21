@@ -11,6 +11,11 @@ class MesesMantenimientoSerializer(serializers.ModelSerializer):
         model=MesesMantenimiento
         fields='__all__'
 
+class AreaMantenimientoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=AreaMantenimiento
+        fields='__all__'
+
 class MetodoPagoMantenimientoSerializer(serializers.ModelSerializer):
     class Meta:
         model=MetodoPagoMantenimiento
@@ -31,12 +36,17 @@ class SeccionMantenimientoSerializer(serializers.ModelSerializer):
         model=SeccionMantenimiento
         fields='__all__'
 
-class AreaMantenimientoSerializer(serializers.ModelSerializer):
+class ConfirmacionMantenimientoSerializer(serializers.ModelSerializer):
     class Meta:
-        model=AreaMantenimiento
+        model=ConfirmacionMantenimiento
         fields='__all__'
 
 class SexoMantenimientoSerializer(serializers.ModelSerializer):
     class Meta:
         model=SexoMantenimiento
+        fields='__all__'
+
+class TurnoMantenimientoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=TurnoMantenimiento
         fields='__all__'
