@@ -10,7 +10,8 @@ class MesesMantenimientoSerializer(serializers.ModelSerializer):
     class Meta:
         model=MesesMantenimiento
         fields='__all__'
-class AreaMantenimientoSerializar(serializers.ModelSerializer):
+
+class AreaMantenimientoSerializer(serializers.ModelSerializer):
     class Meta:
         model=AreaMantenimiento
         fields='__all__'
