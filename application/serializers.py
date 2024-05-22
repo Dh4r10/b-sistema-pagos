@@ -70,7 +70,7 @@ class PermisosSerializer(serializers.ModelSerializer):
 
 #Vista usuarios activos
 class UsuariosActivosSerializer(serializers.ModelSerializer):
-    class Meta:
+    class Meta: 
         model=UsuariosActivos
         fields= '__all__' 
 

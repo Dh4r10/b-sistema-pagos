@@ -28,46 +28,49 @@ class MetodoPagoMantenimientoViewSet(viewsets.ModelViewSet):
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=MetodoPagoMantenimientoSerializer
-
+    serializer_class=MetodoPagoMantenimientoSerializar
 class TipoPagoMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=TipoPagoMantenimiento.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=TipoPagoMantenimientoSerializer
-
+    serializer_class=TipoPagoMantenimientoSerializar
 class GradoMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=GradoMantenimiento.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=GradoMantenimientoSerializer
-
+    serializer_class=GradoMantenimientoSerializar
 class SeccionMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=SeccionMantenimiento.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=SeccionMantenimientoSerializer
-
+    serializer_class=SeccionMantenimientoSerializar
 class ConfirmacionMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=ConfirmacionMantenimiento.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=ConfirmacionMantenimientoSerializer
+    serializer_class=ConfirmacionMantenimientoSerializar
 
 class SexoMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=SexoMantenimiento.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=SexoMantenimientoSerializer
+    serializer_class=SexoMantenimientoSerializar
 
-class TurnoMantenimientoViewSet(viewsets.ModelViewSet):
-    queryset=TurnoMantenimiento.objects.all()
+class AuditoriaViewSet(viewsets.ModelViewSet):
+    queryset=Auditoria.objects.all()
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=TurnoMantenimientoSerializer
+    serializer_class=AuditoriaSerializar
+
+class TurnoMantenimientoViewSet(viewsets.ModelViewSet):
+    queryset=Auditoria.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=TurnoMantenimientoSerializar

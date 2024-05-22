@@ -16,6 +16,16 @@ router.register('api/confirmacion_mantenimiento',views.ConfirmacionMantenimiento
 router.register('api/sexo_mantenimiento',views.SexoMantenimientoViewSet, basename='sexo_mantenimiento')
 router.register('api/turno_mantenimiento',views.TurnoMantenimientoViewSet, basename='turno_mantenimiento')
 
+router.register('api/metodo-pago_mantenimiento',views.MetodoPagoMantenimientoViewSet, basename='metodo_pago')
+router.register('api/tipo-pago_mantenimiento',views.TipoPagoMantenimientoViewSet, basename='tipo_pago')
+router.register('api/grado_mantenimiento',views.GradoMantenimientoViewSet, basename='grado')
+router.register('api/seccion_mantenimiento',views.SeccionMantenimientoViewSet, basename='seccion')
+router.register('api/confirmacion_mantenimiento',views.ConfirmacionMantenimientoViewSet, basename='confirmacion')
+router.register('api/sexo_mantenimiento',views.SexoMantenimientoViewSet, basename='sexo')
+
+#Tabla Auditoria
+router.register('api/auditoria',views.AuditoriaViewSet, basename='auditoria')
+
 #Estamos incluyendo las rutas a la ruta principal de la app
 urlpatterns = [
     path('', include(router.urls)),

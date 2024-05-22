@@ -16,37 +16,42 @@ class AreaMantenimientoSerializer(serializers.ModelSerializer):
         model=AreaMantenimiento
         fields='__all__'
 
-class MetodoPagoMantenimientoSerializer(serializers.ModelSerializer):
+class MetodoPagoMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=MetodoPagoMantenimiento
         fields='__all__'
 
-class TipoPagoMantenimientoSerializer(serializers.ModelSerializer):
+class TipoPagoMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=TipoPagoMantenimiento
         fields='__all__'
 
-class GradoMantenimientoSerializer(serializers.ModelSerializer):
+class GradoMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=GradoMantenimiento
         fields='__all__'
 
-class SeccionMantenimientoSerializer(serializers.ModelSerializer):
+class SeccionMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=SeccionMantenimiento
         fields='__all__'
 
-class ConfirmacionMantenimientoSerializer(serializers.ModelSerializer):
+class ConfirmacionMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=ConfirmacionMantenimiento
         fields='__all__'
 
-class SexoMantenimientoSerializer(serializers.ModelSerializer):
+class SexoMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=SexoMantenimiento
         fields='__all__'
 
-class TurnoMantenimientoSerializer(serializers.ModelSerializer):
+class AuditoriaSerializar(serializers.ModelSerializer):
+    class Meta:
+        model=Auditoria
+        fields='__all__'
+
+class TurnoMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=TurnoMantenimiento
         fields='__all__'
