@@ -100,5 +100,19 @@ class TurnoMantenimiento(models.Model):
         managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table="turno_mantenimiento"
 
+class Auditoria(models.Model):
+    tabla=models.CharField(max_length=30,null=True,blank=True)
+    id_registro=models.IntegerField(null=True,blank=True)
+    tabla=models.CharField(max_length=30,null=True,blank=True)
+    accion=models.CharField(max_length=30,null=True,blank=True)
+    fecha=models.DateField(null=True,blank=True)
+    hora=models.TimeField(null=True,blank=True)
+    usuario_responsable=models.CharField(max_length=50,null=True,blank=True)
+
+    class Meta:
+        managed=False
+        db_table="auditoria"
+
+
 
 

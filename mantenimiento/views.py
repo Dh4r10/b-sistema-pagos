@@ -21,8 +21,7 @@ class AreaMantenimientoViewSet(viewsets.ModelViewSet):
     permission_classes=[
         permissions.AllowAny,
     ]
-    serializer_class=AreaMantenimientoSerializar
-
+    serializer_class=AreaMantenimientoSerializer
 
 class MetodoPagoMantenimientoViewSet(viewsets.ModelViewSet):
     queryset=MetodoPagoMantenimiento.objects.all()
@@ -68,3 +67,10 @@ class AuditoriaViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class=AuditoriaSerializar
+
+class TurnoMantenimientoViewSet(viewsets.ModelViewSet):
+    queryset=Auditoria.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=TurnoMantenimientoSerializar

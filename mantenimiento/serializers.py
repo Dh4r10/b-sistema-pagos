@@ -16,8 +16,6 @@ class AreaMantenimientoSerializer(serializers.ModelSerializer):
         model=AreaMantenimiento
         fields='__all__'
 
-
-
 class MetodoPagoMantenimientoSerializar(serializers.ModelSerializer):
     class Meta:
         model=MetodoPagoMantenimiento
@@ -51,4 +49,9 @@ class SexoMantenimientoSerializar(serializers.ModelSerializer):
 class AuditoriaSerializar(serializers.ModelSerializer):
     class Meta:
         model=Auditoria
+        fields='__all__'
+
+class TurnoMantenimientoSerializar(serializers.ModelSerializer):
+    class Meta:
+        model=TurnoMantenimiento
         fields='__all__'
