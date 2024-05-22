@@ -12,21 +12,25 @@ class TipoUsuario(models.Model):
         db_table = 'tipo_usuario'
 
 class AuthUser(AbstractUser):
-    # id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', default=None, null=False, blank=True)
-    # ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.  com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
-    # nombres = models.CharField(max_length=50, null=False, blank=True)
-    # apellido_paterno = models.CharField(max_length=30, null=False, blank=True)
-    # apellido_materno = models.CharField(max_length=30, null=False, blank=True)
-    # dni = models.CharField(max_length=8, null=False, blank=True, unique=True)
-    # celular = models.CharField(max_length=9, null=False, blank=True)
-    # domicilio = models.CharField(max_length=50, null=False, blank=True)
-    # sexo = models.CharField(max_length=20, null=False, blank=True)
-    # fecha_nacimiento = models.DateField(null=False, blank=True)
-    # fecha_creacion = models.DateField(auto_now_add=True, null=False)
-    # usuario_responsable= models.CharField(max_length=50, null=False, blank=True)
-    # last_logout = models.DateTimeField(default=None, null=True, blank=False)
+    id = models.BigAutoField(primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', default=None, null=False, blank=True)
+    ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
+    nombres = models.CharField(max_length=50, null=False, blank=True)
+    apellido_paterno = models.CharField(max_length=30, null=False, blank=True)
+    apellido_materno = models.CharField(max_length=30, null=False, blank=True)
+    dni = models.CharField(max_length=8, null=False, blank=True, unique=True)
+    celular = models.CharField(max_length=9, null=False, blank=True)
+    domicilio = models.CharField(max_length=50, null=False, blank=True)
+    sexo = models.CharField(max_length=20, null=False, blank=True)
+    fecha_nacimiento = models.DateField(null=False, blank=True)
+    fecha_creacion = models.DateField(auto_now_add=True, null=False)
+
+    last_logout = models.DateTimeField(default=None, null=True, blank=False)
+
     # si el usuario hace un segundo Login
     # session_id_active = models.CharField(max_length=100, null=True, blank=True) # uuid => a1b2c3d4-1234-5678-1234-56781234567 
+    
     # Añade estos atributos para evitar el conflicto con los atributos de AbstractUser
     # last_login = None
     first_name = None
@@ -56,20 +60,17 @@ class Permisos(models.Model):
     class Meta:
         db_table="permisos"
 
-#VISTAS
+# VISTAS
 
 class UsuariosActivos(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     codigo = models.CharField(max_length=150)
     usuario = models.CharField(max_length=112)
     id_tipo_usuario = models.BigIntegerField()
     tipo = models.CharField(max_length=50)
-    email = models.CharField(max_length=254)
-    username = models.CharField(max_length=150)
-    password = models.CharField(max_length=128)
-    fecha_inicio = models.DateField(default='2024-01-01')
-    hora_inicio = models.CharField(max_length=13,default='2')
-    fecha_cierre = models.DateField(default='2024-01-01')
-    hora_cierre = models.CharField(max_length=13,default='2')
+    correo = models.CharField(max_length=254)
+    ultimo_inicio = models.CharField(max_length=24)
 
-    class Meta:  # Indica a Django que no debe crear una tabla para este modelo
+    class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = 'usuarios_activos'
