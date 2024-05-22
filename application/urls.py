@@ -15,7 +15,7 @@ router.register('api/tipo_usuario', views.TipoUsuarioViewSet, basename='tipo_usu
 router.register('api/usuario', views.AuthUserViewSet, basename='usuario')
 router.register('api/modulos', views.ModulosViewSet, basename='modulos')
 router.register('api/permisos', views.PermisosViewSet, basename='permisos')
-router.register('api/usuarios_activos', views.UsuariosActivosViewSet, basename='usuarios_activos')
+# router.register('api/usuarios_activos', views.UsuariosActivosViewSet, basename='usuarios_activos')
 
 urlpatterns = [
     path('', include(router.urls)),

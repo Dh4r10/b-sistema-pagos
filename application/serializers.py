@@ -68,11 +68,11 @@ class PermisosSerializer(serializers.ModelSerializer):
         model=Permisos
         fields='__all__'
 
-#Vista usuarios activos
-class UsuariosActivosSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=UsuariosActivos
-        fields= '__all__' 
+# #Vista usuarios activos
+# class UsuariosActivosSerializer(serializers.ModelSerializer):
+#     class Meta: 
+#         model=UsuariosActivos
+#         fields= '__all__' 
 
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()

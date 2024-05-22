@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'application',
     'datos_alumno',
     'mantenimiento',
+    'pagos',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
@@ -133,11 +134,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_pagos_unidad_1',
-        'USER': 'root',
+        'NAME': 'sistema_educativo_pagos',
+        'USER': 'admin',
         'PASSWORD': '12345678',
-        'HOST': 'servidor-jami.clwiks6ew97v.us-east-2.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
-        'PORT': '3320',       # El puerto predeterminado de MySQL/MariaDB
+        'HOST': 'jawni-projects.cla64guqgekz.us-east-1.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
+        'PORT': '3321',       # El puerto predeterminado de MySQL/MariaDB
     }
 }
 

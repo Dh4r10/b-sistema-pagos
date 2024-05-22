@@ -43,13 +43,13 @@ class ModulosViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = ModulosSerializer
 
-class UsuariosActivosViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = UsuariosActivos.objects.all()
-    permission_classes = [
-        # IsAuthenticated,
-        permissions.AllowAny,
-    ]
-    serializer_class = UsuariosActivosSerializer
+# class UsuariosActivosViewSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = UsuariosActivos.objects.all()
+#     permission_classes = [
+#         # IsAuthenticated,
+#         permissions.AllowAny,
+#     ]
+#     serializer_class = UsuariosActivosSerializer
 
     def get_queryset(self):
         return super().get_queryset()
