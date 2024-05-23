@@ -13,8 +13,8 @@ from django.utils import timezone
 class TipoUsuarioViewSet(viewsets.ModelViewSet):
     queryset = TipoUsuario.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        #IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = TipoUsuarioSerializer
 
@@ -25,7 +25,6 @@ class AuthUserViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = AuthUserSerializer
-
 
 class PermisosViewSet(viewsets.ModelViewSet):
     queryset = Permisos.objects.all()
@@ -173,17 +172,17 @@ def update_last_logout(request):
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class LogoutAPIView(generics.GenericAPIView):
-    serializer_class=LogoutSerializer
+# class LogoutAPIView(generics.GenericAPIView):
+#     serializer_class=LogoutSerializer
 
-    permission_classes = [
-        # IsAuthenticated,
-        permissions.AllowAny,
-    ]
+#     permission_classes = [
+#         # IsAuthenticated,
+#         permissions.AllowAny,
+#     ]
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+#     def post(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#         return Response(status=status.HTTP_204_NO_CONTENT)

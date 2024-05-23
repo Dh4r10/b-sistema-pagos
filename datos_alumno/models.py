@@ -24,7 +24,7 @@ class Familiar(models.Model):
     provincia_nacimiento = models.CharField(max_length=30, null=False, blank=True)
     distrito_nacimiento = models.CharField(max_length=30, null=False, blank=False)
     fecha_nacimiento = models.DateField(null=False, blank=True)
-    estado_civil = models.DateField(max_length=10, null=False, blank=True)
+    estado_civil = models.CharField(max_length=10, null=False, blank=True)
     vive = models.BooleanField(default=True, null=False, blank=True)
     vive_con = models.BooleanField(default=True, null=False, blank=True)
     apoderado = models.BooleanField(default=True, null=False, blank=True)
@@ -90,7 +90,7 @@ class AlumnoFamiliar(models.Model):
 class EstudiantesActivos(models.Model):
     id = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=8)
-    estado = models.BooleanField()
+    deuda = models.BooleanField()
     alumno = models.CharField(max_length=152)
     beneficio = models.CharField(max_length=20)
     turno = models.CharField(max_length=15)
@@ -98,12 +98,13 @@ class EstudiantesActivos(models.Model):
     seccion = models.CharField(max_length=15)
 
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = "estudiantes_activos"
 
 class EstudiantesEliminados(models.Model):
     id = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=8)
-    estado = models.BooleanField()
+    deuda = models.BooleanField()
     alumno = models.CharField(max_length=152)
     beneficio = models.CharField(max_length=20)
     turno = models.CharField(max_length=15)
@@ -111,12 +112,13 @@ class EstudiantesEliminados(models.Model):
     seccion = models.CharField(max_length=15)
 
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este moo
         db_table = "estudiantes_eliminados"
 
 class EstudiantesSolicitudEliminacion(models.Model):
     id = models.AutoField(primary_key=True)
     codigo = models.CharField(max_length=8)
-    estado = models.BooleanField()
+    deuda = models.BooleanField()
     alumno = models.CharField(max_length=152)
     beneficio = models.CharField(max_length=20)
     turno = models.CharField(max_length=15)
@@ -124,5 +126,6 @@ class EstudiantesSolicitudEliminacion(models.Model):
     seccion = models.CharField(max_length=15)
 
     class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = "estudiantes_en_solicitud_eliminacion"
 
