@@ -59,7 +59,8 @@ class Permisos(models.Model):
     class Meta:
         db_table="permisos"
 
-#VISTAS
+# VISTAS
+
 class UsuariosActivos(models.Model):
     id = models.BigIntegerField(primary_key=True)
     codigo = models.CharField(max_length=150)
