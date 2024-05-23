@@ -90,7 +90,7 @@ class SexoMantenimiento(models.Model):
         managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table="sexo_mantenimiento"
 
-#Filtro de sexo por mantenimiento
+#Filtro de turno por mantenimiento
 class TurnoMantenimiento(models.Model):
     tabla=models.CharField(max_length=30)
     nombre=models.CharField(max_length=30)
