@@ -34,23 +34,21 @@ class Pendiente(models.Model):
         db_table="pendiente"
 
 class Pagos(models.Model):
-    codigo_recibo=models.CharField(max_length=10, null=False,blank=True)    
-    fecha_emision=models.DateField(null=True,blank=True)
-    moneda=models.CharField(max_length=20,null=False,blank=True )
-    condicion_venta=models.CharField(max_length=20,null=False,blank =True)
-    metodo_pago=models.CharField(max_length=30,null=False,blank=True)
+    codigo_recibo=models.CharField(max_length=10, null=True,blank=True)    
+    fecha_vencimiento=models.DateField(null=True,blank=True)
+    moneda=models.CharField(max_length=20,null=True,blank=True )
+    condicion_venta=models.CharField(max_length=20,null=True,blank =True)
+    metodo_pago=models.CharField(max_length=30,null=True,blank=True)
     cantidad=models.IntegerField(null=True,blank=True)
-    um=models.CharField(max_length=10,null=False,blank=True)
+    um=models.CharField(max_length=10,null=True,blank=True)
     precio_unitario=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     op_exonerada=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     tasa_igv=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
-    anticipado=models.BooleanField(null=False,blank=True)
-    estado=models.BooleanField(null=False,blank=True)
-    mes_cancelado=models.CharField(max_length=50, null=True,blank=True)
+    anticipado=models.BooleanField(default=False,blank=True)
+    estado=models.BooleanField(default=True,blank=True)
     area_desaprobada=models.CharField(max_length=50, null=True,blank=True)
     id_pendiente=models.ForeignKey(Pendiente,models.DO_NOTHING,db_column="id_pendiente",default=None,null=False)
     monto=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
-    
 
     class Meta:
         db_table="pagos"
