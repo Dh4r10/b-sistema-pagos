@@ -76,21 +76,3 @@ class UsuariosActivosSerializer(serializers.ModelSerializer):
     class Meta: 
         model=UsuariosActivos
         fields= '__all__' 
-
-# class LogoutSerializer(serializers.Serializer):
-#     refresh = serializers.CharField()
-
-#     default_error_messages = {
-#         'bad_token':('Token is expired')
-#     }
-
-#     def validate(self, attrs):
-#         self.token = attrs['refresh']
-
-#         return attrs
-    
-#     def save(self, **kwargs):
-#         try:
-#             RefreshToken(self.token).blacklist()
-#         except RecursionError:
-#             self.fail('bad token')

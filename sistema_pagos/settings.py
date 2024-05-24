@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'datos_alumno',
     'mantenimiento',
     'pagos',
+    'caja',
     'rest_framework',
     # 'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
