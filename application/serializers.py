@@ -12,6 +12,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['username'] = user.username
+        token['nombres'] = user.nombres
+        token['apellido_paterno'] = user.apellido_paterno
+        token['apellido_materno'] = user.apellido_materno
         # get perfil
         token['ruta_fotografica'] = user.ruta_fotografia
         # Obtén el perfil asociado al usuario
