@@ -1,13 +1,12 @@
 from .models import *
-from rest_framework import viewsets, permissions, generics
+from rest_framework import viewsets, permissions, status
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
-from rest_framework import status
 from utils import send_email
-from django.contrib.auth import authenticate
 from django.utils import timezone
+from django.contrib.sessions.models import Session
 
 # Create your views here.
 class TipoUsuarioViewSet(viewsets.ModelViewSet):
@@ -171,18 +170,3 @@ def update_last_logout(request):
         return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-# class LogoutAPIView(generics.GenericAPIView):
-#     serializer_class=LogoutSerializer
-
-#     permission_classes = [
-#         # IsAuthenticated,
-#         permissions.AllowAny,
-#     ]
-
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-
-#         return Response(status=status.HTTP_204_NO_CONTENT)
