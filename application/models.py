@@ -28,16 +28,11 @@ class AuthUser(AbstractUser):
 
     last_logout = models.DateTimeField(default=None, null=True, blank=False)
 
-    # si el usuario hace un segundo Login
-    # session_id_active = models.CharField(max_length=100, null=True, blank=True) # uuid => a1b2c3d4-1234-5678-1234-56781234567 
-    
-    # Añade estos atributos para evitar el conflicto con los atributos de AbstractUser
-    # last_login = None
     first_name = None
     last_name = None
     groups = None
     user_permissions = None
-    date_joined = None
+    date_joined= None
 
 #Tabla de Modulos
 class Modulos(models.Model):
@@ -60,7 +55,7 @@ class Permisos(models.Model):
     class Meta:
         db_table="permisos"
 
-#VISTAS
+# VISTAS
 
 class UsuariosActivos(models.Model):
     id = models.BigIntegerField(primary_key=True)
@@ -74,3 +69,13 @@ class UsuariosActivos(models.Model):
     class Meta:
         managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = 'usuarios_activos'
+
+class RefreshToken(models.Model):
+    user = models.OneToOneField(AuthUser, on_delete=models.CASCADE, db_column='usuario_refreshtoken')
+    token = models.TextField(unique=True)
+
+    def __str__(self):
+        return self.token
+    
+    class Meta:
+        db_table='refresh_token'
