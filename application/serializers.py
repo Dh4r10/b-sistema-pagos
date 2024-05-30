@@ -56,6 +56,7 @@ class TipoUsuarioSerializer(serializers.ModelSerializer):
 class AuthUserSerializer(serializers.ModelSerializer):
     id_tipo_usuario = serializers.PrimaryKeyRelatedField(queryset=TipoUsuario.objects.all(), write_only=True)
     tipo_usuario = TipoUsuarioSerializer(source='id_tipo_usuario', read_only=True)
+    ruta_fotografia = serializers.CharField()
 
     class Meta:     
         model = AuthUser

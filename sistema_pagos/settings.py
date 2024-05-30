@@ -191,6 +191,28 @@ AUTH_USER_MODEL = 'application.AuthUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+# Enviar e-mails
+
 SENDGRID_API_KEY = ''
 
 DEFAULT_FROM_EMAIL= 'jawmiprojects@gmail.com'
+
+# Subir imagenes
+
+AWS_ACCESS_KEY_ID = 'AKIA2UC26PSLFMNDUXCH'
+AWS_SECRET_ACCESS_KEY = 'QbUZbWjhtWiiVeYmWH+XbRUV2xMogYe4RFe7A395' #
+AWS_STORAGE_BUCKET_NAME = 'fotos-users'#
+AWS_S3_REGION_NAME = 'us-east-2'  # e.g., us-east-1
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com' #
+
+# For serving static files directly from S3
+AWS_S3_URL_PROTOCOL = 'https'
+AWS_S3_USE_SSL = True
+AWS_S3_VERIFY = True
+
+# Static and media file configuration
+# STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/images/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

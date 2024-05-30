@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 
+def upload_image(instance, filename):
+    return f'images/{filename}'
+
 # Create your models here.
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=50, unique=True, null=False, blank=True)
@@ -15,7 +18,8 @@ class AuthUser(AbstractUser):
     id = models.BigAutoField(primary_key=True)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', default=None, null=False, blank=True)
-    ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
+    # ruta_fotografia=models.ImageField(upload_to=upload_image, null=False, default='images/default_img.jpg')
+    ruta_fotografia=models.CharField(max_length=255, null=False, default='images/default_img.jpg')
     nombres = models.CharField(max_length=50, null=False, blank=True)
     apellido_paterno = models.CharField(max_length=30, null=False, blank=True)
     apellido_materno = models.CharField(max_length=30, null=False, blank=True)
