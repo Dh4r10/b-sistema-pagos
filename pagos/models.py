@@ -17,6 +17,7 @@ class CronogrmaPago(models.Model):
     fecha_fin=models.DateField(null=False, blank=True)
     descripcion=models.CharField(max_length=50,null=True,blank=True)
     areaa=models.CharField(max_length=50,null=True,blank=True)
+    mes_cancelado=models.CharField(max_length=50,null=True,blank=True)
     estado=models.BooleanField(null=True,blank=True)
     id_tipo_pago=models.ForeignKey(TipoPago,models.DO_NOTHING,db_column="id_tipo_pago", default=None, null=False, blank=True)
 
@@ -49,6 +50,7 @@ class Pagos(models.Model):
     area_desaprobada=models.CharField(max_length=50, null=True,blank=True)
     id_pendiente=models.ForeignKey(Pendiente,models.DO_NOTHING,db_column="id_pendiente",default=None,null=False)
     monto=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
+    tipo_comprobante=models.CharField(max_length=50,null=True,blank=True )
 
     class Meta:
         db_table="pagos"
