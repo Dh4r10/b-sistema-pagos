@@ -3,6 +3,7 @@ from .serializers import CajaSerializer, TurnoCajaSerializer, AperturaSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
+
 # Create your views here.
 
 class CajaViewSet(viewsets.ModelViewSet):
