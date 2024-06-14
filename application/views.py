@@ -1,18 +1,20 @@
 from .models import *
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from utils import send_email
+from django.contrib.auth import authenticate
+from django.utils import timezone
 
 # Create your views here.
 class TipoUsuarioViewSet(viewsets.ModelViewSet):
     queryset = TipoUsuario.objects.all()
     permission_classes = [
-        IsAuthenticated,
-        # permissions.AllowAny,
+        #IsAuthenticated,
+        permissions.AllowAny,
     ]
     serializer_class = TipoUsuarioSerializer
 
@@ -23,8 +25,6 @@ class AuthUserViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = AuthUserSerializer
-
-    
 
 class PermisosViewSet(viewsets.ModelViewSet):
     queryset = Permisos.objects.all()
@@ -42,13 +42,28 @@ class ModulosViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = ModulosSerializer
 
-class UsuariosActivosViewSet(viewsets.ModelViewSet):
+class UsuariosActivosViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = UsuariosActivos.objects.all()
     permission_classes = [
         # IsAuthenticated,
         permissions.AllowAny,
     ]
     serializer_class = UsuariosActivosSerializer
+
+    def get_queryset(self):
+        return super().get_queryset()
+    
+    def create(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    def update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    def partial_update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    def destroy(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 #Para enviar el correo 
 
 @api_view(['POST'])
@@ -75,6 +90,7 @@ def send_reset_password_email(request):
                 <h1>I.E.P "CIENCIAS"</h1>
                 <h2>Seguridad y gestión de datos de calidad</h2>
                 <a href="{reset_password_url}"><Button>REESTABLECER CONTRASEÑA</Button></a>
+                <p>ESTE CORREO ES DE CARACTER CONFIDENCIAL, NO COMPARTIRLO</p>
                 ''',
             to_email=email # list of 
         ) 
@@ -132,3 +148,41 @@ def restore_password(request):
         return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+
+def update_last_logout(request):
+    username = request.data.get('username')
+    dateTime = timezone.now()
+
+    try:
+        # buscar el usuario
+        user = AuthUser.objects.get(username=username)
+
+        if not user.is_active:
+            return Response({'message': 'User is not active'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # cambiar la contraseña
+        user.last_logout = dateTime
+        user.save()
+
+        return Response({'message': 'last logout update!!'}, status=status.HTTP_200_OK)
+    except AuthUser.DoesNotExist:
+        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# class LogoutAPIView(generics.GenericAPIView):
+#     serializer_class=LogoutSerializer
+
+#     permission_classes = [
+#         # IsAuthenticated,
+#         permissions.AllowAny,
+#     ]
+
+#     def post(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+
+#         return Response(status=status.HTTP_204_NO_CONTENT)

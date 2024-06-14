@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'application',
+    'datos_alumno',
+    'mantenimiento',
+    'pagos',
     'rest_framework',
+    # 'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
     'corsheaders',
 ]
@@ -53,8 +57,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": True,
 
     "ALGORITHM": "HS256",
     "VERIFYING_KEY": "",
@@ -130,11 +134,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_pagos_unidad_1',
-        'USER': 'root',
+        'NAME': 'sistema_educativo_pagos',
+        'USER': 'admin',
         'PASSWORD': '12345678',
-        'HOST': 'servidor-jami.clwiks6ew97v.us-east-2.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
-        'PORT': '3320',       # El puerto predeterminado de MySQL/MariaDB
+        'HOST': 'jawni-projects.cla64guqgekz.us-east-1.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
+        'PORT': '3321',       # El puerto predeterminado de MySQL/MariaDB
     }
 }
 
@@ -185,6 +189,6 @@ AUTH_USER_MODEL = 'application.AuthUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = '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'
 
 DEFAULT_FROM_EMAIL= 'MARZCHELO1@GMAIL.COM'
