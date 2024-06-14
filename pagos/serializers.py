@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from datos_alumno .models import *
 from datos_alumno .serializers import *
+import django_filters
 
 class TipoPagoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,3 +34,11 @@ class PagosSerializer(serializers.ModelSerializer):
     class Meta:
         model=Pagos
         fields="__all__"
+
+class PendienteFilter(django_filters.FilterSet):
+    id_alumno = django_filters.NumberFilter(field_name='id_alumno__id')
+    id_tipo_pago = django_filters.NumberFilter(field_name='id_cronograma_pago__id_tipo_pago')
+
+    class Meta:
+        model = Pendiente
+        fields = ['id_alumno', 'id_tipo_pago']

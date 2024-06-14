@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
     'corsheaders',
+    'pytz',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {
@@ -170,7 +172,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
@@ -191,6 +193,6 @@ AUTH_USER_MODEL = 'application.AuthUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = ''
 
-DEFAULT_FROM_EMAIL= 'MARZCHELO1@GMAIL.COM'
+DEFAULT_FROM_EMAIL= 'jawmiprojects@gmail.com'

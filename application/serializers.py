@@ -11,6 +11,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Datos del token
         token['username'] = user.username
+        token['nombres'] = user.nombres
+        token['apellido_paterno'] = user.apellido_paterno
+        token['apellido_materno'] = user.apellido_materno
+        # get perfil
         token['ruta_fotografica'] = user.ruta_fotografia
 
         # Obtén el tipo de usuario asociado al usuario
