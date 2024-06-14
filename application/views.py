@@ -1,12 +1,12 @@
-from .models import *
-from rest_framework import viewsets, permissions, generics
-from .serializers import *
+from .models import TipoUsuario, AuthUser, Modulos, Permisos, UsuariosActivos
+from .serializers import TipoUsuarioSerializer, AuthUserSerializer, ModulosSerializer, PermisosSerializer, UsuariosActivosSerializer
+from rest_framework import viewsets, permissions, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
 from utils import send_email
-from django.contrib.auth import authenticate
 from django.utils import timezone
 
 # Create your views here.
@@ -50,22 +50,7 @@ class UsuariosActivosViewSet(viewsets.ReadOnlyModelViewSet):
     ]
     serializer_class = UsuariosActivosSerializer
 
-    def get_queryset(self):
-        return super().get_queryset()
-    
-    def create(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    def update(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    def partial_update(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    def destroy(self, request, *args, **kwargs):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 #Para enviar el correo 
-
 @api_view(['POST'])
 def send_reset_password_email(request):
     # el correo del usuario
@@ -148,7 +133,30 @@ def restore_password(request):
         return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
+
+class LogoutView(APIView):
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            username = request.data.get('username')
+            dateTime = timezone.now()
+
+            user = AuthUser.objects.get(username=username)
+
+            if not user.is_active:
+                return Response({'message': 'User is not active'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Actualizar ultimo cierre de sesión
+            user.last_logout = dateTime
+            user.save()
+
+            return Response({'message': 'Token invalidado'},status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({str(e)}, status=status.HTTP_400_BAD_REQUEST) 
+
 @api_view(['POST'])
 
 def update_last_logout(request):
@@ -171,18 +179,3 @@ def update_last_logout(request):
         return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-# class LogoutAPIView(generics.GenericAPIView):
-#     serializer_class=LogoutSerializer
-
-#     permission_classes = [
-#         # IsAuthenticated,
-#         permissions.AllowAny,
-#     ]
-
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-
-#         return Response(status=status.HTTP_204_NO_CONTENT)

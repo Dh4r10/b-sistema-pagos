@@ -41,10 +41,13 @@ INSTALLED_APPS = [
     'datos_alumno',
     'mantenimiento',
     'pagos',
+    'caja',
     'rest_framework',
-    # 'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
     'corsheaders',
+    'pytz',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {
@@ -56,7 +59,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
-    "ROTATE_REFRESH_TOKENS": True,
+    "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
 
@@ -83,6 +86,7 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+    
     "TOKEN_OBTAIN_SERIALIZER": "application.serializers.MyTokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
@@ -168,7 +172,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
@@ -189,6 +193,6 @@ AUTH_USER_MODEL = 'application.AuthUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = ''
 
-DEFAULT_FROM_EMAIL= 'MARZCHELO1@GMAIL.COM'
+DEFAULT_FROM_EMAIL= 'jawmiprojects@gmail.com'
