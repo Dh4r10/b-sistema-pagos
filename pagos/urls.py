@@ -9,6 +9,7 @@ router.register('api/tipo-pagos',views.TipoPagoViewSet, basename='tipo_pago' )
 router.register('api/cronograma-pago',views.CronogramaPagoViewSet, basename='cronograma_pago' )
 router.register('api/pediente',views.PendienteViewSet, basename='pendiente' )
 router.register('api/pagos',views.PagoViewSet, basename='pagos' )
+router.register('api/historial-pagos',views.HistorialPagosViewSet, basename='historial-pagos' )
 
 urlpatterns = [
     path('', include(router.urls)),

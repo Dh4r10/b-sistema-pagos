@@ -5,7 +5,7 @@ import uuid
 def upload_image(instance, filename):
     return f'images/{filename}'
 
-# Create your models here.
+# Create your models here. 
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=50, unique=True, null=False, blank=True)
     descripcion = models.CharField(max_length=100, null=False, blank=True)

@@ -42,3 +42,9 @@ class PendienteFilter(django_filters.FilterSet):
     class Meta:
         model = Pendiente
         fields = ['id_alumno', 'id_tipo_pago']
+
+class HistorialPagosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= HistorialPagos
+        fields='__all__'
+
