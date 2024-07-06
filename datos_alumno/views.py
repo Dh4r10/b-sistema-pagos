@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, views
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 
@@ -58,3 +58,32 @@ class EstudiantesSolicitudEliminacionViewSet(viewsets.ReadOnlyModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = EstudiantesSolicitudEliminacionSerializer
+
+class InscribirAlumnoAPIView(views.APIView):
+    def post(self, request, *args, **kwargs):
+
+        alumno = request.data.get('alumno')
+
+        def saveAlumno(alumno):
+            serializer = AlumnoSerializer(data=alumno)
+            if serializer.is_valid():
+                save_data = serializer.save()
+                return save_data.id
+            
+        def saveFamiliar(familiar):
+            serializer = FamiliarSerializer(data=familiar)
+            if serializer.is_valid():
+                save_data = serializer.save()
+                return save_data.id
+            
+        def saveAlumnoFamiliar(relacion):
+            serializer = AlumnoFamiliarSerializer(data=relacion)
+            if serializer.is_valid():
+                serializer.save()
+                return "Relación exitosa"
+            
+        alumno_id = saveAlumno(alumno)
+        
+
+
+        

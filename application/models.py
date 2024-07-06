@@ -2,7 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 
-# Create your models here.
+def upload_image(instance, filename):
+    return f'images/{filename}'
+
+# Create your models here. 
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=50, unique=True, null=False, blank=True)
     descripcion = models.CharField(max_length=100, null=False, blank=True)
@@ -14,7 +17,8 @@ class AuthUser(AbstractUser):
     id = models.BigAutoField(primary_key=True)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
     id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column='id_tipo_usuario', default=None, null=False, blank=True)
-    ruta_fotografia = models.CharField(max_length=255, null=False, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
+    # ruta_fotografia=models.ImageField(upload_to=upload_image, null=False, default='images/default_img.jpg')
+    ruta_fotografia=models.CharField(max_length=255, null=False, default='images/default_img.jpg')
     nombres = models.CharField(max_length=50, null=False, blank=True)
     apellido_paterno = models.CharField(max_length=30, null=False, blank=True)
     apellido_materno = models.CharField(max_length=30, null=False, blank=True)
@@ -27,16 +31,11 @@ class AuthUser(AbstractUser):
 
     last_logout = models.DateTimeField(default=None, null=True, blank=False)
 
-    # si el usuario hace un segundo Login
-    # session_id_active = models.CharField(max_length=100, null=True, blank=True) # uuid => a1b2c3d4-1234-5678-1234-56781234567 
-    
-    # Añade estos atributos para evitar el conflicto con los atributos de AbstractUser
-    # last_login = None
     first_name = None
     last_name = None
     groups = None
     user_permissions = None
-    date_joined = None
+    date_joined= None
 
 #Tabla de Modulos
 class Modulos(models.Model):
@@ -73,3 +72,13 @@ class UsuariosActivos(models.Model):
     class Meta:
         managed = False  # Indica a Django que no debe crear una tabla para este modelo
         db_table = 'usuarios_activos'
+
+class RefreshToken(models.Model):
+    user = models.OneToOneField(AuthUser, on_delete=models.CASCADE, db_column='usuario_refreshtoken')
+    token = models.TextField(unique=True)
+
+    def __str__(self):
+        return self.token
+    
+    class Meta:
+        db_table='refresh_token'
