@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'mantenimiento',
     'pagos',
     'caja',
+    'reportes',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework_simplejwt',
