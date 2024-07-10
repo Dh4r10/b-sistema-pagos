@@ -1,6 +1,9 @@
 from rest_framework import viewsets, permissions
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+
 
 # Create your views here.
 class BeneficioViewSet(viewsets.ModelViewSet):
@@ -28,12 +31,27 @@ class AlumnoViewSet(viewsets.ModelViewSet):
     serializer_class = AlumnoSerializer
 
 class AlumnoFamiliarViewSet(viewsets.ModelViewSet):
-    queryset = AlumnoFamiliar.objects.all()
     permission_classes = [
-        # IsAuthenticated,
         permissions.AllowAny,
     ]
     serializer_class = AlumnoFamiliarSerializer
+
+    def get_queryset(self):
+        id_alumno = self.request.query_params.get('id_alumno')
+        if id_alumno is not None:
+            return AlumnoFamiliar.objects.filter(id_alumno=id_alumno)
+        return AlumnoFamiliar.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    # Si necesitas devolver una respuesta JSON específica
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 class EstudiantesActivosViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = EstudiantesActivos.objects.all()
