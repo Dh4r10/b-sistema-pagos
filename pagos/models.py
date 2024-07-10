@@ -55,5 +55,19 @@ class Pagos(models.Model):
     class Meta:
         db_table="pagos"
 
+class HistorialPagos(models.Model):
+    id = models.AutoField(primary_key=True)
+    codigo = models.CharField(max_length=10)
+    deuda = models.BooleanField()
+    alumno = models.CharField(max_length=152)
+    tipo_de_pago = models.CharField(max_length=20, blank=False)
+    monto = models.DecimalField(decimal_places=2, max_digits=10, null=True)
+    fecha = models.DateField()
+
+    class Meta:
+        managed = False  # Indica a Django que no debe crear una tabla para este modelo
+        db_table = "historial_pagos"
+
+
 
 

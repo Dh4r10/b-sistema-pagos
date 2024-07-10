@@ -35,3 +35,9 @@ class PagoViewSet(viewsets.ModelViewSet):
     ]
     serializer_class=PagosSerializer
     
+class HistorialPagosViewSet(viewsets.ModelViewSet):
+    queryset=HistorialPagos.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=HistorialPagosSerializer
