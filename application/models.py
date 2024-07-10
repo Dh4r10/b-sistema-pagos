@@ -13,7 +13,6 @@ class TipoUsuario(models.Model):
 
     class Meta:
         db_table = 'tipo_usuario'
-
 class AuthUser(AbstractUser):
     id = models.BigAutoField(primary_key=True)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
