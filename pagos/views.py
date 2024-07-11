@@ -88,3 +88,9 @@ def estado_deuda(request):
 
      except Exception as e:
         return Response({str(e)}, status=status.HTTP_400_BAD_REQUEST) 
+class HistorialPagosViewSet(viewsets.ModelViewSet):
+    queryset=HistorialPagos.objects.all()
+    permission_classes=[
+        permissions.AllowAny,
+    ]
+    serializer_class=HistorialPagosSerializer
