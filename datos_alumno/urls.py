@@ -4,6 +4,7 @@ from django.urls import path, include
 from .views import *
 from datos_alumno import views
 
+
 router = routers.DefaultRouter()
 
 router.register('api/beneficio', views.BeneficioViewSet, basename='beneficio')

@@ -35,7 +35,7 @@ class Pendiente(models.Model):
         db_table="pendiente"
 
 class Pagos(models.Model):
-    codigo_recibo=models.CharField(max_length=10, null=True,blank=True)    
+    codigo_recibo=models.CharField(max_length=20, null=True,blank=True)    
     fecha_vencimiento=models.DateField(null=True,blank=True)
     moneda=models.CharField(max_length=20,null=True,blank=True )
     condicion_venta=models.CharField(max_length=20,null=True,blank =True)
@@ -45,6 +45,7 @@ class Pagos(models.Model):
     precio_unitario=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     op_exonerada=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     tasa_igv=models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
+    id_Document=models.CharField(max_length=40 ,blank=True, null=True)
     anticipado=models.BooleanField(default=False,blank=True)
     estado=models.BooleanField(default=True,blank=True)
     area_desaprobada=models.CharField(max_length=50, null=True,blank=True)

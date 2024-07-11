@@ -2,7 +2,14 @@ from .models import Caja, TurnoCaja, Apertura, Movimiento,AperturaMovimiento,His
 from .serializers import CajaSerializer, TurnoCajaSerializer, AperturaSerializer, MovimientoSerializer,AperturaMovimientoSerializer,HistorialPagosSerializer,AperturaCajaSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
+from rest_framework.decorators import api_view
+from rest_framework import viewsets, permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from application.models import AuthUser
+from Crypto.Cipher import AES
+import bcrypt
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 
@@ -72,5 +79,23 @@ class AperturaCajaViewSet(viewsets.ModelViewSet):
         AllowAny
     ]
     serializer_class =AperturaCajaSerializer
+#Esto es la lógica para obtener la contraseña   
+@api_view(["POST"])
+def password_anulacion(request):
+    password=request.data.get("password")
+    print(password)
+    try:
+        #buscas la contrasñea del usuario
+        user=AuthUser.objects.get(username=password)
 
+        if user.id_tipo_usuario.nombre!="DIRECTOR":
+            return Response({'message': 'Usuario no autorizado'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not user.is_active:
+            return Response({'message': 'User is not active'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({'message': 'Password changed'}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

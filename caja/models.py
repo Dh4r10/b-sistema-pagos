@@ -56,6 +56,7 @@ class AperturaMovimiento(models.Model):
 class HistorialPagos(models.Model):
     codigo=models.CharField(max_length=50,unique=True,null=True,blank=True)
     alumno=models.CharField(max_length=100,blank=True,null=True)
+    id_Document=models.CharField(max_length=100,blank=True,null=True)
     tipo_de_pago=models.CharField(max_length=50,blank=True,null=True)
     monto= models.DecimalField(max_digits=10,decimal_places=2,blank=True,null=True)
     fecha=models.DateField(blank=True,null=False)

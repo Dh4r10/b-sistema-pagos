@@ -96,6 +96,8 @@ class EstudiantesActivos(models.Model):
     turno = models.CharField(max_length=15)
     grado = models.CharField(max_length=15)
     seccion = models.CharField(max_length=15)
+    ruta_fotografia=models.CharField(max_length=255)
+    deuda=models.BooleanField(blank=True)
 
     class Meta:
         managed = False  # Indica a Django que no debe crear una tabla para este modelo

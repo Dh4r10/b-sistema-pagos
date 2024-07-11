@@ -12,4 +12,5 @@ router.register('api/pagos',views.PagoViewSet, basename='pagos' )
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/estado-deuda',views.estado_deuda,name='estado-deuda'),
 ]
