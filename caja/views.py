@@ -1,19 +1,17 @@
 from .models import Caja, TurnoCaja, Apertura, Movimiento,AperturaMovimiento,HistorialPagos,AperturaCaja
 from .serializers import CajaSerializer, TurnoCajaSerializer, AperturaSerializer, MovimientoSerializer,AperturaMovimientoSerializer,HistorialPagosSerializer,AperturaCajaSerializer
-from rest_framework import viewsets
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view
-from rest_framework import viewsets, permissions, status
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from application.models import AuthUser
-from Crypto.Cipher import AES
-import bcrypt
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 
-class CajaViewSet(viewsets.ModelViewSet):
+class CajaViewSet(ModelViewSet):
     queryset = Caja.objects.all()
     permission_classes = [
         #IsAuthenticated,
@@ -21,7 +19,7 @@ class CajaViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = CajaSerializer
 
-class TurnoCajaViewSet(viewsets.ModelViewSet):
+class TurnoCajaViewSet(ModelViewSet):
     queryset = TurnoCaja.objects.all()
     permission_classes = [
         # IsAuthenticated
@@ -29,7 +27,7 @@ class TurnoCajaViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = TurnoCajaSerializer
 
-class AperturaViewSet(viewsets.ModelViewSet):
+class AperturaViewSet(ModelViewSet):
     queryset = Apertura.objects.all().order_by("-id") 
     permission_classes = [
         # IsAuthenticated
@@ -37,7 +35,7 @@ class AperturaViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = AperturaSerializer
 
-class MovimientoViewSet(viewsets.ModelViewSet):
+class MovimientoViewSet(ModelViewSet):
     #queryset = Movimiento.objects.all().order_by("-id")
     permission_classes = [
         # IsAuthenticated
@@ -51,7 +49,7 @@ class MovimientoViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(fecha__date=fecha)
         return queryset
 
-class AperturaMovimientoViewSet(viewsets.ModelViewSet):
+class AperturaMovimientoViewSet(ModelViewSet):
     permission_classes = [
         # IsAuthenticated
         AllowAny
@@ -64,7 +62,7 @@ class AperturaMovimientoViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(id_apertura=id_apertura)
         return queryset
 
-class HistorialPagosViewSet(viewsets.ModelViewSet):
+class HistorialPagosViewSet(ModelViewSet):
     queryset = HistorialPagos.objects.all()
     permission_classes = [
         # IsAuthenticated
@@ -72,7 +70,7 @@ class HistorialPagosViewSet(viewsets.ModelViewSet):
     ]
     serializer_class =HistorialPagosSerializer
 
-class AperturaCajaViewSet(viewsets.ModelViewSet):
+class AperturaCajaViewSet(ModelViewSet):
     queryset = AperturaCaja.objects.all()
     permission_classes = [
         # IsAuthenticated

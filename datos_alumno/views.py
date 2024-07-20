@@ -1,38 +1,39 @@
-from rest_framework import viewsets, permissions, views
 from .serializers import *
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 
 # Create your views here.
-class BeneficioViewSet(viewsets.ModelViewSet):
+class BeneficioViewSet(ModelViewSet):
     queryset = Beneficio.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = BeneficioSerializer
 
-class FamiliarViewSet(viewsets.ModelViewSet):
+class FamiliarViewSet(ModelViewSet):
     queryset = Familiar.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = FamiliarSerializer
 
-class AlumnoViewSet(viewsets.ModelViewSet):
+class AlumnoViewSet(ModelViewSet):
     queryset = Alumno.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = AlumnoSerializer
 
-class AlumnoFamiliarViewSet(viewsets.ModelViewSet):
+class AlumnoFamiliarViewSet(ModelViewSet):
     permission_classes = [
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = AlumnoFamiliarSerializer
 
@@ -53,55 +54,37 @@ class AlumnoFamiliarViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-class EstudiantesActivosViewSet(viewsets.ReadOnlyModelViewSet):
+class EstudiantesActivosViewSet(ReadOnlyModelViewSet):
     queryset = EstudiantesActivos.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = EstudiantesActivosSerializer
 
-class EstudiantesEliminadosViewSet(viewsets.ReadOnlyModelViewSet):
+class EstudiantesEliminadosViewSet(ReadOnlyModelViewSet):
     queryset = EstudiantesEliminados.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = EstudiantesEliminadosSerializer
 
-class EstudiantesSolicitudEliminacionViewSet(viewsets.ReadOnlyModelViewSet):
+class EstudiantesSolicitudEliminacionViewSet(ReadOnlyModelViewSet):
     queryset = EstudiantesSolicitudEliminacion.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = EstudiantesSolicitudEliminacionSerializer
 
-class InscribirAlumnoAPIView(views.APIView):
+class InscribirAlumnoAPIView(APIView):
     def post(self, request, *args, **kwargs):
+        serializer = InscribirAlumnoSerializer(data=request.data)
 
-        alumno = request.data.get('alumno')
-
-        def saveAlumno(alumno):
-            serializer = AlumnoSerializer(data=alumno)
-            if serializer.is_valid():
-                save_data = serializer.save()
-                return save_data.id
-            
-        def saveFamiliar(familiar):
-            serializer = FamiliarSerializer(data=familiar)
-            if serializer.is_valid():
-                save_data = serializer.save()
-                return save_data.id
-            
-        def saveAlumnoFamiliar(relacion):
-            serializer = AlumnoFamiliarSerializer(data=relacion)
-            if serializer.is_valid():
-                serializer.save()
-                return "Relación exitosa"
-            
-        alumno_id = saveAlumno(alumno)
+        if serializer.is_valid():
+            result = serializer.save()
+            return Response(result, status=HTTP_201_CREATED)
         
-
-
-        
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+  
