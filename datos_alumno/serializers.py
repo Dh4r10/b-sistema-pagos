@@ -47,7 +47,13 @@ class InscribirAlumnoSerializer(Serializer):
         for familiar in familiares:
             AlumnoFamiliar.objects.create(id_alumno=alumno,id_familiar=familiar)
 
-        return {'response': 'alumno creado exitosamente'}
+        return {'message': 'Alumno creado exitosamente', 'alumno': {
+            'id_alumno': alumno.id, 
+            'dni': alumno.dni, 
+            'nombre': alumno.nombres,
+            'apellido_paterno': alumno.apellido_paterno,
+            'apellido_materno': alumno.apellido_materno
+        }}
 
 # VISTAS
 
