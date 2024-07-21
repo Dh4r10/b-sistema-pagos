@@ -1,21 +1,48 @@
-from rest_framework import viewsets, permissions
-from .serializers import ReporteBeneficiadosSerializer, ReporteBeneficiadosFilter, ReporteBeneficiadosDatosSerializer, ReporteBeneficiadosGrupoSerializer, ReporteDeudasSerializer, ReporteDeudasFilter, ReporteDeudasDatosSerializer, ReporteDeudasGrupoSerializer, ReporteMetodoPagoSerializer, ReporteMetodoPagoFilter, ReporteMetodoPagoDatosSerializer, ReporteMetodoPagoGrupoSerializer, ReporteIngresosSerializer, ReporteIngresosFilter, ReporteIngresosDatosSerializer, ReporteIngresosGrupoSerializer
+from .serializers import ReporteBeneficiadosSerializer, ReporteBeneficiadosFilter, ReporteBeneficiadosDatosSerializer, ReporteBeneficiadosGrupoSerializer, ReporteDeudasSerializer, ReporteDeudasFilter, ReporteDeudasDatosSerializer, ReporteDeudasGrupoSerializer, ReporteMetodoPagoSerializer, ReporteMetodoPagoFilter, ReporteMetodoPagoDatosSerializer, ReporteMetodoPagoGrupoSerializer, ReporteIngresosSerializer, ReporteIngresosFilter, ReporteIngresosDatosSerializer, ReporteIngresosGrupoSerializer, TipoReportesSerializer, HistorialReportesSerializer, PermisosReportesSerializer
+from .models import ReporteBeneficiados, ReporteDeudas, ReporteMetodoPago, ReporteIngresos, TipoReportes, HistorialReportes, PermisosReportes
 
-from .models import ReporteBeneficiados, ReporteDeudas, ReporteMetodoPago, ReporteIngresos
-from rest_framework.permissions import IsAuthenticated
-from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
+
+from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Sum
 
 # Create your views here.
 
-class ReporteBeneficiadosViewSet(viewsets.ModelViewSet):
+class TipoReportesViewSet(ModelViewSet):
+    queryset = TipoReportes.objects.all()
+    permission_classes = [
+        AllowAny
+    ]
+    serializer_class = TipoReportesSerializer
+
+class HistorialReportesViewSet(ModelViewSet):
+    queryset = HistorialReportes.objects.all()
+    permission_classes = [
+        AllowAny
+    ]
+    serializer_class = HistorialReportesSerializer
+    filter_backends = (OrderingFilter,)
+    ordering_fields = ['fecha']
+    ordering = ['-fecha']
+
+class PermisosReportesViewSet(ModelViewSet):
+    queryset = PermisosReportes.objects.all()
+    permission_classes = [
+        AllowAny
+    ]
+    serializer_class = PermisosReportesSerializer
+
+# REPORTES
+
+class ReporteBeneficiadosViewSet(ModelViewSet):
     queryset = ReporteBeneficiados.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = ReporteBeneficiadosSerializer
     filter_backends = [DjangoFilterBackend]
@@ -57,11 +84,11 @@ class ReporteBeneficiadosViewSet(viewsets.ModelViewSet):
         serializer = ReporteBeneficiadosGrupoSerializer(resultado, many=True)
         return Response(serializer.data)
     
-class ReporteDeudasViewSet(viewsets.ModelViewSet):
+class ReporteDeudasViewSet(ModelViewSet):
     queryset = ReporteDeudas.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = ReporteDeudasSerializer
     filter_backends = [DjangoFilterBackend]
@@ -103,11 +130,11 @@ class ReporteDeudasViewSet(viewsets.ModelViewSet):
         serializer = ReporteDeudasGrupoSerializer(resultado, many=True)
         return Response(serializer.data)
 
-class ReporteMetodoPagoViewSet(viewsets.ModelViewSet):
+class ReporteMetodoPagoViewSet(ModelViewSet):
     queryset = ReporteMetodoPago.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = ReporteMetodoPagoSerializer
     filter_backends = [DjangoFilterBackend]
@@ -149,11 +176,11 @@ class ReporteMetodoPagoViewSet(viewsets.ModelViewSet):
         serializer = ReporteMetodoPagoGrupoSerializer(resultado, many=True)
         return Response(serializer.data)
     
-class ReporteIngresosViewSet(viewsets.ModelViewSet):
+class ReporteIngresosViewSet(ModelViewSet):
     queryset = ReporteIngresos.objects.all()
     permission_classes = [
         # IsAuthenticated,
-        permissions.AllowAny,
+        AllowAny,
     ]
     serializer_class = ReporteIngresosSerializer
     filter_backends = [DjangoFilterBackend]
