@@ -179,3 +179,29 @@ def update_last_logout(request):
         return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+# Actualizar datos del usuario    
+
+class UpdateProfilePictureAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, user_id, *args, **kwargs):
+        try:
+            user = AuthUser.objects.get(id=user_id)
+        except AuthUser.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = AuthUserSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        # Generar un nuevo JWT
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+
+        # Retornar el nuevo JWT y opcionalmente los datos del usuario
+        return Response({
+            'access': access_token,
+            'refresh': str(refresh),
+            'user': serializer.data
+        }, status=status.HTTP_200_OK)
