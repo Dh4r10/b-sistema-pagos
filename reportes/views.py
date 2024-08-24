@@ -189,11 +189,28 @@ class ReporteIngresosViewSet(ModelViewSet):
     @action(detail=False, methods=['get'])
     def agrupado(self, request):
         tipo_pago = request.query_params.get('tipo_pago', None)
+        fecha_inicial = request.query_params.get('fecha_inicial', None)
+        fecha_final = request.query_params.get('fecha_final', None)
         
-        if tipo_pago:
-            filtered_queryset = ReporteIngresos.objects.filter(tipo_pago=tipo_pago).order_by('mes', 'año', 'tipo_pago')
+        # if tipo_pago:
+            
+        #     if (fecha_inicial and fecha_final):
+        #         filtered_queryset = ReporteIngresos.objects.filter(tipo_pago=tipo_pago, fecha_pago__range=[fecha_inicial, fecha_final]).order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
+            
+        #     else:
+        #         filtered_queryset = ReporteIngresos.objects.filter(tipo_pago=tipo_pago).order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
+
+        # else:
+        #     filtered_queryset = self.queryset.order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
+
+        if tipo_pago and not (fecha_inicial and fecha_final):
+            filtered_queryset = ReporteIngresos.objects.filter(tipo_pago=tipo_pago).order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
+        elif tipo_pago and (fecha_inicial and fecha_final):
+            filtered_queryset = ReporteIngresos.objects.filter(tipo_pago=tipo_pago, fecha_pago__range=[fecha_inicial, fecha_final]).order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
+        elif not tipo_pago and (fecha_inicial and fecha_final):
+            filtered_queryset = ReporteIngresos.objects.filter(fecha_pago__range=[fecha_inicial, fecha_final]).order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
         else:
-            filtered_queryset = self.queryset.order_by('mes', 'año', 'tipo_pago')
+            filtered_queryset = self.queryset.order_by('mes', 'año', 'tipo_pago', '-fecha_pago')
 
         # Agrupar por beneficio, grado y sección, y sumar los descuentos
         agrupados = filtered_queryset.values('mes', 'año', 'tipo_pago').annotate(total=Sum('ingresos'))
