@@ -15,7 +15,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['apellido_paterno'] = user.apellido_paterno
         token['apellido_materno'] = user.apellido_materno
         # get perfil
-        token['ruta_fotografica'] = user.ruta_fotografia
+        # token['ruta_fotografica'] = user.ruta_fotografia
+        token['ruta_fotografica'] = user.ruta_fotografia.url if user.ruta_fotografia else None
 
         # Obtén el tipo de usuario asociado al usuario
         id_tipo_usuario = user.id_tipo_usuario
@@ -60,7 +61,8 @@ class TipoUsuarioSerializer(serializers.ModelSerializer):
 class AuthUserSerializer(serializers.ModelSerializer):
     id_tipo_usuario = serializers.PrimaryKeyRelatedField(queryset=TipoUsuario.objects.all(), write_only=True)
     tipo_usuario = TipoUsuarioSerializer(source='id_tipo_usuario', read_only=True)
-    ruta_fotografia = serializers.CharField()
+    # ruta_fotografia = serializers.CharField()
+    # ruta_fotografia = serializers.ImageField(use_url=True, required=False)
 
     class Meta:     
         model = AuthUser

@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'pytz',
-    'django_filters'
+    'django_filters',
+    'storages'
 ]
 
 REST_FRAMEWORK = {
@@ -132,11 +133,6 @@ WSGI_APPLICATION = 'sistema_pagos.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sistema_educativo_pagos',
@@ -202,20 +198,48 @@ DEFAULT_FROM_EMAIL= 'jawmiprojects@gmail.com'
 
 # Subir imagenes
 
-AWS_ACCESS_KEY_ID = 'AKIA2UC26PSLFMNDUXCH'
-AWS_SECRET_ACCESS_KEY = 'QbUZbWjhtWiiVeYmWH+XbRUV2xMogYe4RFe7A395' #
-AWS_STORAGE_BUCKET_NAME = 'fotos-users'#
-AWS_S3_REGION_NAME = 'us-east-2'  # e.g., us-east-1
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com' #
+# AWS_ACCESS_KEY_ID = 'AKIA2UC26PSLFMNDUXCH'
+# AWS_SECRET_ACCESS_KEY = 'QbUZbWjhtWiiVeYmWH+XbRUV2xMogYe4RFe7A395' #
+# AWS_STORAGE_BUCKET_NAME = 'fotos-users'#
+# AWS_S3_REGION_NAME = 'us-east-2'  # e.g., us-east-1
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com' #
 
-# For serving static files directly from S3
-AWS_S3_URL_PROTOCOL = 'https'
-AWS_S3_USE_SSL = True
-AWS_S3_VERIFY = True
+# # For serving static files directly from S3
+# AWS_S3_URL_PROTOCOL = 'https'
+# AWS_S3_USE_SSL = True
+# AWS_S3_VERIFY = True
 
-# Static and media file configuration
-# STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# # Static and media file configuration
+# # STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/images/'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = 'AKIA2UC26PSLMDS5XWVV'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'fotos-users'
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Configuración de almacenamiento estático y de medios
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/images/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# URL para acceder a los archivos estáticos y de medios
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media-desarrollo/'
+
+# Opcional: Configuración adicional de S3
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+
+# # For serving static files directly from S3
+# AWS_S3_URL_PROTOCOL = 'https'
+# AWS_S3_USE_SSL = True
+# AWS_S3_VERIFY = True
+
+# # Static and media file configuration
+# MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/images-desarrollo/'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
