@@ -18,6 +18,9 @@ from dotenv import load_dotenv
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 
+# # Cargar las variables de entorno desde el archivo .env
+# dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -215,7 +218,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # URL para acceder a los archivos estáticos y de medios
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media-desarrollo/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # Opcional: Configuración adicional de S3
 AWS_S3_FILE_OVERWRITE = False
