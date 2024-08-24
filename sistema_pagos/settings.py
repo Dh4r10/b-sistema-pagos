@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b=c&4&hlo+hy-tyribf(to$5ix2@p#-_il&5j2a5q=m)wy@s5q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -135,11 +140,11 @@ WSGI_APPLICATION = 'sistema_pagos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_educativo_pagos',
-        'USER': 'admin',
-        'PASSWORD': '12345678',
-        'HOST': 'jawni-projects.cla64guqgekz.us-east-1.rds.amazonaws.com',  # O la dirección de tu servidor MariaDB
-        'PORT': '3321',       # El puerto predeterminado de MySQL/MariaDB
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT')    # El puerto predeterminado de MySQL/MariaDB
     }
 }
 
@@ -192,33 +197,15 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # Enviar e-mails
 
-SENDGRID_API_KEY = ''
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
-DEFAULT_FROM_EMAIL= 'jawmiprojects@gmail.com'
+DEFAULT_FROM_EMAIL= os.getenv('SENGRID_EMAIL')
 
 # Subir imagenes
 
-# AWS_ACCESS_KEY_ID = 'AKIA2UC26PSLFMNDUXCH'
-# AWS_SECRET_ACCESS_KEY = 'QbUZbWjhtWiiVeYmWH+XbRUV2xMogYe4RFe7A395' #
-# AWS_STORAGE_BUCKET_NAME = 'fotos-users'#
-# AWS_S3_REGION_NAME = 'us-east-2'  # e.g., us-east-1
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com' #
-
-# # For serving static files directly from S3
-# AWS_S3_URL_PROTOCOL = 'https'
-# AWS_S3_USE_SSL = True
-# AWS_S3_VERIFY = True
-
-# # Static and media file configuration
-# # STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
-# # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/images/'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-AWS_ACCESS_KEY_ID = 'AKIA2UC26PSLMDS5XWVV'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'fotos-users'
+AWS_ACCESS_KEY_ID = os.getenv('ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('SECRET_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
@@ -234,12 +221,3 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media-desarrollo/'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = False
-
-# # For serving static files directly from S3
-# AWS_S3_URL_PROTOCOL = 'https'
-# AWS_S3_USE_SSL = True
-# AWS_S3_VERIFY = True
-
-# # Static and media file configuration
-# MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/images-desarrollo/'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
