@@ -1,4 +1,4 @@
-from .views import TipoUsuarioViewSet, AuthUserViewSet, ModulosViewSet, PermisosViewSet, UsuariosActivosViewSet, LogoutView, UpdateProfilePictureAPIView
+from .views import TipoUsuarioViewSet, AuthUserViewSet, ModulosViewSet, PermisosViewSet, UsuariosActivosViewSet, LogoutView, UpdateProfilePictureView
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
@@ -22,5 +22,5 @@ urlpatterns = [
     path('api/send-reset-password', views.send_reset_password_email, name='reset_password'),
     path('api/reset-password', views.restore_password, name='reset_password'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api/update-profile-picture/<int:user_id>/', UpdateProfilePictureAPIView.as_view(), name='update-profile-picture'),
+    path('api/update-profile-picture/<int:user_id>/', UpdateProfilePictureView.as_view(), name='update-profile-picture'),
 ]

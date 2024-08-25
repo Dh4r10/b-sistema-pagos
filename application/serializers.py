@@ -50,6 +50,28 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['access'] = str(refresh.access_token)
 
         return data
+    
+class UpdateProfilePictureSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    ruta_fotografia = serializers.ImageField(required=False)
+
+    def update(self, instance, validated_data):
+        user = AuthUser.objects.get(id=validated_data['user_id'])
+        user.ruta_fotografia = validated_data.get('ruta_fotografia', user.ruta_fotografia)
+        user.save()
+
+        # Generar un nuevo JWT
+        refresh = RefreshToken.for_user(user)
+        access_token = refresh.access_token
+
+        # Agregar campos personalizados al token de acceso
+        access_token = MyTokenObtainPairSerializer.get_token(user)
+        refresh = MyTokenObtainPairSerializer.get_token(user)
+
+        return {
+            'refresh': str(refresh),
+            'access': str(access_token),
+        }
 
 # this serializer is already with url
 
