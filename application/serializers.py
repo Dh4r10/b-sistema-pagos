@@ -54,10 +54,41 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UpdateProfilePictureSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
     ruta_fotografia = serializers.ImageField(required=False)
+    nombres = serializers.CharField(required=False)
+    apellido_paterno = serializers.CharField(required=False)
+    apellido_materno = serializers.CharField(required=False)
+    dni = serializers.CharField(required=False)
+    celular = serializers.CharField(required=False)
+    domicilio = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+    fecha_nacimiento = serializers.DateField(required=False)
+    id_tipo_usuario = serializers.IntegerField(required=False)
+    sexo = serializers.CharField(required=False)
+    username = serializers.CharField(required=False)
 
     def update(self, instance, validated_data):
         user = AuthUser.objects.get(id=validated_data['user_id'])
         user.ruta_fotografia = validated_data.get('ruta_fotografia', user.ruta_fotografia)
+        user.nombres = validated_data.get('nombres', user.nombres)
+        user.apellido_paterno = validated_data.get('apellido_paterno', user.apellido_paterno)
+        user.apellido_materno = validated_data.get('apellido_materno', user.apellido_materno)
+        user.dni = validated_data.get('dni', user.dni)
+        user.celular = validated_data.get('celular', user.celular)
+        user.domicilio = validated_data.get('domicilio', user.domicilio)
+        user.email = validated_data.get('email', user.email)
+        user.fecha_nacimiento = validated_data.get('fecha_nacimiento', user.fecha_nacimiento)
+
+        # Obtener la instancia de TipoUsuario
+        tipo_usuario_id = validated_data.get('id_tipo_usuario')
+        if tipo_usuario_id is not None:
+            tipo_usuario = TipoUsuario.objects.get(id=tipo_usuario_id)
+            user.id_tipo_usuario = tipo_usuario
+        
+        user.sexo = validated_data.get('sexo', user.sexo)
+        user.username = validated_data.get('username', user.username)
+        
+        user.sexo = validated_data.get('sexo', user.sexo)
+        user.username = validated_data.get('username', user.username)
         user.save()
 
         # Generar un nuevo JWT
