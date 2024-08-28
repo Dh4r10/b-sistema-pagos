@@ -1,5 +1,10 @@
 from django.db import models
 
+# Upload image
+
+def upload_image(instance, filename):
+    return f'estudiantes/dni-{filename}'
+
 # Create your models here.
 class Beneficio(models.Model):
     id = models.AutoField(primary_key=True)
@@ -44,7 +49,7 @@ class Familiar(models.Model):
 
 class Alumno(models.Model):
     id = models.AutoField(primary_key=True)
-    ruta_fotografia = models.CharField(max_length=255, default='https://objetivoligar.com/wp-content/uploads/2017/03/blank-profile-picture-973460_1280-580x580.jpg')
+    ruta_fotografia = models.ImageField(upload_to=upload_image, null=True, default='hombre.png')
     dni = models.CharField(max_length=8, null=False, blank=False)
     nombres = models.CharField(max_length=50, null=False, blank=False)
     apellido_paterno = models.CharField(max_length=50, null=False, blank=False)
