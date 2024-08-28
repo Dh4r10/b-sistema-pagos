@@ -43,9 +43,6 @@ class InscribirAlumnoSerializer(Serializer):
         familiares_data = validated_data.pop('familiares')
         ruta_fotografia_base64 = validated_data.pop('ruta_fotografia', None)
 
-        print('alumno_data', alumno_data)
-        print('ruta_fotografia_base64', ruta_fotografia_base64)
-
         alumno = Alumno.objects.create(**alumno_data)
 
         if ruta_fotografia_base64:
