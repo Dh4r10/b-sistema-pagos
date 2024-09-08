@@ -10,9 +10,12 @@ from application.models import AuthUser
 from Crypto.Cipher import AES
 import bcrypt
 from django.contrib.auth.hashers import make_password
+from typing import List, Optional
+from .reniec import ApisNetPe
 
 # Create your views here.
-
+APIS_TOKEN ="apis-token-9599.Nx9GOvSBWISX4OVHHmItIWc9KRfMwSz1"
+api_consulta=ApisNetPe(APIS_TOKEN)
 class CajaViewSet(viewsets.ModelViewSet):
     queryset = Caja.objects.all()
     permission_classes = [
@@ -99,3 +102,12 @@ def password_anulacion(request):
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(["POST"])
+def ruc_Reniec(request):
+    ruc=request.data.get("ruc")
+    print("ruc",ruc)
+    try:
+        return Response({'message': 'R.U.C Enontrado','data':api_consulta.get_company(ruc)}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
