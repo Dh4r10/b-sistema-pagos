@@ -1,8 +1,8 @@
+from rest_framework import viewsets
 from .views import CajaViewSet, TurnoCajaViewSet, AperturaViewSet, MovimientoViewSet,AperturaMovimientoViewSet,HistorialPagosViewSet,AperturaCajaViewSet
 from django.urls import path, include
 from rest_framework import routers
 from caja import views
-
 router = routers.DefaultRouter()
 
 router.register('api/caja', CajaViewSet, basename='caja')

@@ -1,3 +1,4 @@
+from rest_framework import viewsets
 from .models import Caja, TurnoCaja, Apertura, Movimiento,AperturaMovimiento,HistorialPagos,AperturaCaja
 from .serializers import CajaSerializer, TurnoCajaSerializer, AperturaSerializer, MovimientoSerializer,AperturaMovimientoSerializer,HistorialPagosSerializer,AperturaCajaSerializer
 from rest_framework.viewsets import ModelViewSet
