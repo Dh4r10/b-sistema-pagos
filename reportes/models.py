@@ -1,6 +1,37 @@
 from django.db import models
+from application.models import TipoUsuario, AuthUser
 
 # Create your models here.
+
+class TipoReportes(models.Model):
+    nombre = models.CharField(max_length=50, null=False, blank=False)
+    descripcion = models.CharField(max_length=50, null=False, blank=False)
+    estado = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "tipo_reportes"
+
+class HistorialReportes(models.Model):
+    id_tipo_reportes = models.ForeignKey(TipoReportes, models.DO_NOTHING, db_column="id_tipo_reportes", null=False, blank=False)
+    id_usuario = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column="id_usuario", null=False, blank=False)
+    fecha = models.DateTimeField(auto_now_add=True)
+    descripcion = models.CharField(max_length=255)
+    estado = models.BooleanField(default=True)
+    
+    class Meta:
+        db_table = "historial_reportes"
+
+class PermisosReportes(models.Model):
+    id_tipo_reportes = models.ForeignKey(TipoReportes, models.DO_NOTHING, db_column="id_tipo_reportes", null=False, blank=False)
+    id_tipo_usuario = models.ForeignKey(TipoUsuario, models.DO_NOTHING, db_column="id_tipo_usuario", null=False, blank=False)
+    nombre = models.CharField(max_length=50, null=False, blank=False)
+    descripcion = models.CharField(max_length=255)
+    estado = models.BooleanField(default=True)
+    
+    class Meta:
+        db_table = "permisos_reportes"
+
+# REPORTES
 
 class ReporteBeneficiados(models.Model):
     id = models.IntegerField(primary_key=True)
