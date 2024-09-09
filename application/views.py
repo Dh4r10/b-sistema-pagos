@@ -1,5 +1,6 @@
-from .models import TipoUsuario, AuthUser, Modulos, Permisos, UsuariosActivos
-from .serializers import TipoUsuarioSerializer, AuthUserSerializer, ModulosSerializer, PermisosSerializer, UsuariosActivosSerializer, UpdateProfilePictureSerializer
+from .models import TipoUsuario, AuthUser, Modulos, Permisos
+from .serializers import TipoUsuarioSerializer, AuthUserSerializer, AuthUserListSerializer, ModulosSerializer, PermisosSerializer, UpdateProfilePictureSerializer
+from .pagination import PageNumberPagination
 from rest_framework import viewsets, permissions, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
@@ -8,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from utils import send_email
 from django.utils import timezone
+from django.db import connection
 
 # Create your views here.
 class TipoUsuarioViewSet(viewsets.ModelViewSet):
@@ -25,6 +27,39 @@ class AuthUserViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = AuthUserSerializer
+    pagination_class = PageNumberPagination
+
+    def list(self, request):
+        # Obtener los parámetros de la solicitud GET
+        is_active = request.query_params.get('is_active')
+        tipo_usuario = request.query_params.get('tipo_usuario')
+        last_login = request.query_params.get('last_login')
+        buscador = request.query_params.get('buscador')
+
+        if is_active is not None:
+            is_active = True if is_active.lower() == 'true' else False
+
+        if buscador is not None:
+            buscador = '%' + buscador.upper() + '%'
+
+        with connection.cursor() as cursor:
+            # Llamar al procedimiento almacenado
+            cursor.callproc('getAllUsers', [is_active, tipo_usuario, last_login, buscador])
+
+            keys = ['id', 'dni', 'usuario', 'tipo_usuario', 'email', 'last_login']
+
+            # Si el procedimiento devuelve resultados
+            results = cursor.fetchall()
+
+            data = [dict(zip(keys, row)) for row in results]
+
+        # Devolver la respuesta con los resultados
+        page = self.paginate_queryset(data)
+        if page is not None:
+            return self.get_paginated_response(page)
+
+        # Devolver la respuesta con los resultados
+        return Response(data=data, status=status.HTTP_200_OK)
 
 class PermisosViewSet(viewsets.ModelViewSet):
     queryset = Permisos.objects.all()
@@ -41,14 +76,6 @@ class ModulosViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = ModulosSerializer
-
-class UsuariosActivosViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = UsuariosActivos.objects.all()
-    permission_classes = [
-        # IsAuthenticated,
-        permissions.AllowAny,
-    ]
-    serializer_class = UsuariosActivosSerializer
 
 #Para enviar el correo 
 @api_view(['POST'])

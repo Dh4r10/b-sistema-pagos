@@ -69,16 +69,6 @@ class InscribirAlumnoSerializer(Serializer):
 
 # VISTAS
 
-class EstudiantesActivosSerializer(ModelSerializer):
-    class Meta:
-        model=EstudiantesActivos
-        fields= '__all__'
-
-class EstudiantesEliminadosSerializer(ModelSerializer):
-    class Meta:
-        model=EstudiantesEliminados
-        fields= '__all__'
-
 class EstudiantesSolicitudEliminacionSerializer(ModelSerializer):
     class Meta:
         model=EstudiantesSolicitudEliminacion

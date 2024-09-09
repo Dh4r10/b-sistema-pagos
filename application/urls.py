@@ -1,4 +1,4 @@
-from .views import TipoUsuarioViewSet, AuthUserViewSet, ModulosViewSet, PermisosViewSet, UsuariosActivosViewSet, LogoutView, UpdateProfilePictureView
+from .views import TipoUsuarioViewSet, AuthUserViewSet, ModulosViewSet, PermisosViewSet, LogoutView, UpdateProfilePictureView
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import (
@@ -13,7 +13,6 @@ router.register('api/tipo_usuario', TipoUsuarioViewSet, basename='tipo_usuario')
 router.register('api/usuario', AuthUserViewSet, basename='usuario')
 router.register('api/modulos', ModulosViewSet, basename='modulos')
 router.register('api/permisos', PermisosViewSet, basename='permisos')
-router.register('api/usuarios_activos', UsuariosActivosViewSet, basename='usuarios_activos')
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -58,21 +58,6 @@ class Permisos(models.Model):
     class Meta:
         db_table="permisos"
 
-# VISTAS
-
-class UsuariosActivos(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    codigo = models.CharField(max_length=150)
-    usuario = models.CharField(max_length=112)
-    id_tipo_usuario = models.BigIntegerField()
-    tipo = models.CharField(max_length=50)
-    correo = models.CharField(max_length=254)
-    ultimo_inicio = models.CharField(max_length=24)
-
-    class Meta:
-        managed = False  # Indica a Django que no debe crear una tabla para este modelo
-        db_table = 'usuarios_activos'
-
 class RefreshToken(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE, db_column='usuario_refreshtoken')
     token = models.TextField(unique=True)

@@ -1,4 +1,4 @@
-from .models import TipoUsuario, AuthUser, Modulos, Permisos, UsuariosActivos, RefreshToken as RefreshTokenModel
+from .models import TipoUsuario, AuthUser, Modulos, Permisos, RefreshToken as RefreshTokenModel
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -127,6 +127,20 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
         return super().create(validated_data)
     
+class AuthUserListSerializer(serializers.ModelSerializer):
+    tipo_usuario = TipoUsuarioSerializer(source='id_tipo_usuario', read_only=True)
+
+    class Meta:     
+        model = AuthUser
+        fields = ['id', 'email', 'dni', 'nombres', 'apellido_paterno', 'apellido_materno', 'last_login','tipo_usuario']
+
+    def create(self, validated_data):
+        # Extraemos el valor del ID del perfil
+        validated_data['password'] = make_password(
+            validated_data.get('password'))
+
+        return super().create(validated_data)
+    
 #Tabla modulos
 class ModulosSerializer(serializers.ModelSerializer):
     class Meta:
@@ -143,9 +157,3 @@ class PermisosSerializer(serializers.ModelSerializer):
     class Meta:
         model=Permisos
         fields='__all__'
-
-#Vista usuarios activos
-class UsuariosActivosSerializer(serializers.ModelSerializer):
-    class Meta: 
-        model=UsuariosActivos
-        fields= '__all__' 
