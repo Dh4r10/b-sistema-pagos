@@ -1,3 +1,4 @@
+from rest_framework import viewsets
 from .models import Caja, TurnoCaja, Apertura, Movimiento,AperturaMovimiento,HistorialPagos,AperturaCaja
 from .serializers import CajaSerializer, TurnoCajaSerializer, AperturaSerializer, MovimientoSerializer,AperturaMovimientoSerializer,HistorialPagosSerializer,AperturaCajaSerializer
 from rest_framework.viewsets import ModelViewSet
@@ -8,10 +9,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from application.models import AuthUser
 from django.contrib.auth.hashers import make_password
+from typing import List, Optional
+from .reniec import ApisNetPe
 
 # Create your views here.
-
-class CajaViewSet(ModelViewSet):
+APIS_TOKEN ="apis-token-9599.Nx9GOvSBWISX4OVHHmItIWc9KRfMwSz1"
+api_consulta=ApisNetPe(APIS_TOKEN)
+class CajaViewSet(viewsets.ModelViewSet):
     queryset = Caja.objects.all()
     permission_classes = [
         #IsAuthenticated,
@@ -97,3 +101,12 @@ def password_anulacion(request):
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(["POST"])
+def ruc_Reniec(request):
+    ruc=request.data.get("ruc")
+    print("ruc",ruc)
+    try:
+        return Response({'message': 'R.U.C Enontrado','data':api_consulta.get_company(ruc)}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

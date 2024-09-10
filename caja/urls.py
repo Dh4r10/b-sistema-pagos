@@ -1,8 +1,8 @@
+from rest_framework import viewsets
 from .views import CajaViewSet, TurnoCajaViewSet, AperturaViewSet, MovimientoViewSet,AperturaMovimientoViewSet,HistorialPagosViewSet,AperturaCajaViewSet
 from django.urls import path, include
 from rest_framework import routers
 from caja import views
-
 router = routers.DefaultRouter()
 
 router.register('api/caja', CajaViewSet, basename='caja')
@@ -16,4 +16,5 @@ router.register('api/apertura-caja',AperturaCajaViewSet , basename='apertura-caj
 urlpatterns = [
     path('', include(router.urls)),
     path('api/password-anulacion',views.password_anulacion,name='password-anulacion'),
+    path('api/reniec/pagos',views.ruc_Reniec,name='ruc-reniec')
 ]
