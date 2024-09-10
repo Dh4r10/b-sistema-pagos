@@ -11,20 +11,9 @@ class TipoReportesSerializer(ModelSerializer):
         fields = '__all__'
 
 class HistorialReportesSerializer(ModelSerializer):
-    id_tipo_reportes = PrimaryKeyRelatedField(queryset=TipoReportes.objects.all(), write_only=True)
-    id_usuario = PrimaryKeyRelatedField(queryset=AuthUser.objects.all(), write_only=True)
-
-    tipo_reporte = CharField(source='id_tipo_reportes.nombre', read_only=True)
-    codigo_usuario = CharField(source='id_usuario.dni', read_only=True)
-    tipo_usuario = CharField(source='id_usuario.id_tipo_usuario.nombre', read_only=True)
-    usuario = SerializerMethodField()
-    
     class Meta:
         model = HistorialReportes
         fields = '__all__'
-    
-    def get_usuario(self, obj):
-        return f"{obj.id_usuario.nombres} {obj.id_usuario.apellido_paterno} {obj.id_usuario.apellido_materno}"
 
 class PermisosReportesSerializer(ModelSerializer):
     class Meta:

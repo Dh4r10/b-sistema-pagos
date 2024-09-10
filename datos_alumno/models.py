@@ -90,18 +90,3 @@ class AlumnoFamiliar(models.Model):
 
     class Meta:
         db_table = "alumno_x_familiar"
-
-class EstudiantesSolicitudEliminacion(models.Model):
-    id = models.AutoField(primary_key=True)
-    codigo = models.CharField(max_length=8)
-    deuda = models.BooleanField()
-    alumno = models.CharField(max_length=152)
-    beneficio = models.CharField(max_length=20)
-    turno = models.CharField(max_length=15)
-    grado = models.CharField(max_length=15)
-    seccion = models.CharField(max_length=15)
-
-    class Meta:
-        managed = False  # Indica a Django que no debe crear una tabla para este modelo
-        db_table = "estudiantes_en_solicitud_eliminacion"
-

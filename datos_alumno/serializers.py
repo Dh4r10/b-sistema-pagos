@@ -66,10 +66,3 @@ class InscribirAlumnoSerializer(Serializer):
             'apellido_paterno': alumno.apellido_paterno,
             'apellido_materno': alumno.apellido_materno
         }}
-
-# VISTAS
-
-class EstudiantesSolicitudEliminacionSerializer(ModelSerializer):
-    class Meta:
-        model=EstudiantesSolicitudEliminacion
-        fields= '__all__'

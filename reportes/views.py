@@ -1,11 +1,14 @@
 from .serializers import ReporteBeneficiadosSerializer, ReporteBeneficiadosFilter, ReporteBeneficiadosDatosSerializer, ReporteBeneficiadosGrupoSerializer, ReporteDeudasSerializer, ReporteDeudasFilter, ReporteDeudasDatosSerializer, ReporteDeudasGrupoSerializer, ReporteMetodoPagoSerializer, ReporteMetodoPagoFilter, ReporteMetodoPagoDatosSerializer, ReporteMetodoPagoGrupoSerializer, ReporteIngresosSerializer, ReporteIngresosFilter, ReporteIngresosDatosSerializer, ReporteIngresosGrupoSerializer, TipoReportesSerializer, HistorialReportesSerializer, PermisosReportesSerializer
 from .models import ReporteBeneficiados, ReporteDeudas, ReporteMetodoPago, ReporteIngresos, TipoReportes, HistorialReportes, PermisosReportes
+from .pagination import PageNumberPagination
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.filters import OrderingFilter
+
+from rest_framework.status import HTTP_200_OK
+from django.db import connection
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Sum
@@ -25,9 +28,36 @@ class HistorialReportesViewSet(ModelViewSet):
         AllowAny
     ]
     serializer_class = HistorialReportesSerializer
-    filter_backends = (OrderingFilter,)
-    ordering_fields = ['fecha']
-    ordering = ['-fecha']
+    pagination_class = PageNumberPagination
+    
+    def list(self, request):
+        # Obtener los parámetros de la solicitud GET
+        tipo_usuario = request.query_params.get('tipo_usuario')
+        tipo_reporte = request.query_params.get('tipo_reporte')
+        fecha = request.query_params.get('fecha')
+        buscador = request.query_params.get('buscador')
+
+        if buscador is not None:
+            buscador = '%' + buscador.upper() + '%'
+
+        with connection.cursor() as cursor:
+            # Llamar al procedimiento almacenado
+            cursor.callproc('getAllReportHistory', [tipo_usuario, tipo_reporte, fecha, buscador])
+
+            keys = ['id', 'dni', 'usuario', 'tipo_usuario', 'tipo_reporte', 'descripcion', 'fecha']
+
+            # Si el procedimiento devuelve resultados
+            results = cursor.fetchall()
+
+            data = [dict(zip(keys, row)) for row in results]
+
+        # Devolver la respuesta con los resultados
+        page = self.paginate_queryset(data)
+        if page is not None:
+            return self.get_paginated_response(page)
+
+        # Devolver la respuesta con los resultados
+        return Response(data=data, status=HTTP_200_OK)
 
 class PermisosReportesViewSet(ModelViewSet):
     queryset = PermisosReportes.objects.all()

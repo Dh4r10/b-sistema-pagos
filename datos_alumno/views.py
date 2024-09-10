@@ -1,6 +1,6 @@
 from .serializers import *
 from .pagination import PageNumberPagination
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -98,14 +98,6 @@ class AlumnoFamiliarViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-
-class EstudiantesSolicitudEliminacionViewSet(ReadOnlyModelViewSet):
-    queryset = EstudiantesSolicitudEliminacion.objects.all()
-    permission_classes = [
-        # IsAuthenticated,
-        AllowAny,
-    ]
-    serializer_class = EstudiantesSolicitudEliminacionSerializer
 
 class InscribirAlumnoAPIView(APIView):
     def post(self, request, *args, **kwargs):
