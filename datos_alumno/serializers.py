@@ -36,7 +36,7 @@ class AlumnoFamiliarSerializer(ModelSerializer):
 class InscribirAlumnoSerializer(Serializer):
     alumno = AlumnoSerializer()
     familiares = FamiliarSerializer(many=True)
-    ruta_fotografia = CharField(required=False, allow_blank=True)
+    ruta_fotografia = CharField(required=False, allow_blank=True, allow_null=True)
 
     def create(self, validated_data):
         alumno_data = validated_data.pop('alumno')
