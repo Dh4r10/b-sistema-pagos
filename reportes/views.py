@@ -1,6 +1,7 @@
 from .serializers import ReporteBeneficiadosSerializer, ReporteBeneficiadosFilter, ReporteBeneficiadosDatosSerializer, ReporteBeneficiadosGrupoSerializer, ReporteDeudasSerializer, ReporteDeudasFilter, ReporteDeudasDatosSerializer, ReporteDeudasGrupoSerializer, ReporteMetodoPagoSerializer, ReporteMetodoPagoFilter, ReporteMetodoPagoDatosSerializer, ReporteMetodoPagoGrupoSerializer, ReporteIngresosSerializer, ReporteIngresosFilter, ReporteIngresosDatosSerializer, ReporteIngresosGrupoSerializer, TipoReportesSerializer, HistorialReportesSerializer, PermisosReportesSerializer
 from .models import ReporteBeneficiados, ReporteDeudas, ReporteMetodoPago, ReporteIngresos, TipoReportes, HistorialReportes, PermisosReportes
 from .pagination import PageNumberPagination
+from .lists import HistorialReportesSerializerList
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -12,6 +13,9 @@ from django.db import connection
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Sum
+from django.core.cache import cache
+
+from utils import get_cache_key, store_cache_key, invalidate_cache
 
 # Create your views here.
 
@@ -29,8 +33,15 @@ class HistorialReportesViewSet(ModelViewSet):
     ]
     serializer_class = HistorialReportesSerializer
     pagination_class = PageNumberPagination
+    cache_prefix = "historialreportes_"  # Usar un prefijo común para toda la cache de historial de reportes
+    cache_key_list = "historialreportes_cache_keys"  # Clave para almacenar las claves de cache
     
     def list(self, request):
+        cache_key = get_cache_key(self, request)
+        cached_response = cache.get(cache_key)
+        if cached_response:
+            return Response(cached_response, status=HTTP_200_OK)
+        
         # Obtener los parámetros de la solicitud GET
         tipo_usuario = request.query_params.get('tipo_usuario')
         tipo_reporte = request.query_params.get('tipo_reporte')
@@ -51,13 +62,43 @@ class HistorialReportesViewSet(ModelViewSet):
 
             data = [dict(zip(keys, row)) for row in results]
 
-        # Devolver la respuesta con los resultados
         page = self.paginate_queryset(data)
         if page is not None:
-            return self.get_paginated_response(page)
+            serializer = HistorialReportesSerializerList(page, many=True)
+            response_data = self.get_paginated_response(serializer.data).data
+            cache.set(cache_key, response_data, timeout=60*15)  # Cache for 15 minutes
+            store_cache_key(self, cache_key)  # Almacenar la clave de cache
+            return Response(response_data, status=HTTP_200_OK)
 
-        # Devolver la respuesta con los resultados
-        return Response(data=data, status=HTTP_200_OK)
+        serializer = HistorialReportesSerializerList(data, many=True)
+        response_data = serializer.data
+        cache.set(cache_key, response_data, timeout=60*15)  # Cache for 15 minutes
+        store_cache_key(self, cache_key)  # Almacenar la clave de cache
+        return Response(response_data, status=HTTP_200_OK)
+    
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        if response.status_code == 201:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        if response.status_code in [200, 204]:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def partial_update(self, request, *args, **kwargs):
+        response = super().partial_update(request, *args, **kwargs)
+        if response.status_code in [200, 204]:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        response = super().destroy(request, *args, **kwargs)
+        if response.status_code == 204:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
 
 class PermisosReportesViewSet(ModelViewSet):
     queryset = PermisosReportes.objects.all()

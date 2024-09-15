@@ -15,6 +15,9 @@ class Beneficio(models.Model):
 
     class Meta:
         db_table = 'beneficio'
+        indexes = [
+            models.Index(fields=['nombre']),
+        ]
         
 class Familiar(models.Model):
     id = models.AutoField(primary_key=True)
@@ -81,6 +84,15 @@ class Alumno(models.Model):
 
     class Meta:
         db_table = "alumno"
+        indexes = [
+            models.Index(fields=['dni']),
+            models.Index(fields=['nombres']),
+            models.Index(fields=['apellido_paterno']),
+            models.Index(fields=['apellido_materno']),
+            models.Index(fields=['turno']),
+            models.Index(fields=['grado']),
+            models.Index(fields=['seccion']),
+        ]
 
 class AlumnoFamiliar(models.Model):
     id = models.AutoField(primary_key=True)

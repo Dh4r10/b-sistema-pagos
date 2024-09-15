@@ -1,12 +1,15 @@
 from .serializers import *
 from .pagination import PageNumberPagination
+from .filters import AlumnoFilter
+from .lists import AlumnoSerializerList
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
-from django.db import connection
-
+from django_filters.rest_framework import DjangoFilterBackend
+from django.core.cache import cache
+from utils import get_cache_key, invalidate_cache, store_cache_key
 
 # Create your views here.
 class BeneficioViewSet(ModelViewSet):
@@ -27,54 +30,64 @@ class FamiliarViewSet(ModelViewSet):
 
 class AlumnoViewSet(ModelViewSet):
     queryset = Alumno.objects.all()
-    permission_classes = [
-        # IsAuthenticated,
-        AllowAny,
-    ]
     serializer_class = AlumnoSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AlumnoFilter
     pagination_class = PageNumberPagination
+    cache_prefix = "alumnos_"  # Usar un prefijo común para toda la cache de alumnos
+    cache_key_list = "alumnos_cache_keys"  # Clave para almacenar las claves de cache
 
-    def list(self, request):
-        # Obtener los parámetros de la solicitud GET
-        estado = request.query_params.get('estado')
-        deuda = request.query_params.get('deuda')
-        eliminacion_pendiente = request.query_params.get('eliminacion_pendiente')
-        beneficio = request.query_params.get('beneficio')
-        turno = request.query_params.get('turno')
-        grado = request.query_params.get('grado')
-        seccion = request.query_params.get('seccion')
-        buscador = request.query_params.get('buscador')
-
-        if estado is not None:
-            estado = True if estado.lower() == 'true' else False
-
-        if deuda is not None:
-            deuda = True if deuda.lower() == 'true' else False
+    def list(self, request, *args, **kwargs):
+        cache_key = get_cache_key(self, request)
+        cached_response = cache.get(cache_key)
+        if cached_response:
+            return Response(cached_response, status=HTTP_200_OK)
         
-        if eliminacion_pendiente is not None:
-            eliminacion_pendiente = True if eliminacion_pendiente.lower() == 'true' else False
+        queryset = self.filter_queryset(self.get_queryset())
 
-        if buscador is not None:
-            buscador = '%' + buscador.upper() + '%'
+        # Prefetch related data if necessary
+        queryset = queryset.select_related('id_beneficio')
 
-        with connection.cursor() as cursor:
-            # Llamar al procedimiento almacenado
-            cursor.callproc('getAllStudents', [estado, deuda, eliminacion_pendiente, beneficio, turno, grado, seccion, buscador])
+        # Ordenar por nombre completo del alumno
+        queryset = queryset.order_by('nombres', 'apellido_paterno', 'apellido_materno')
 
-            keys = ['id', 'dni', 'alumno', 'beneficio', 'turno', 'grado', 'seccion', 'deuda']
-
-            # Si el procedimiento devuelve resultados
-            results = cursor.fetchall()
-
-            data = [dict(zip(keys, row)) for row in results]
-
-        # Devolver la respuesta con los resultados
-        page = self.paginate_queryset(data)
+        page = self.paginate_queryset(queryset)
         if page is not None:
-            return self.get_paginated_response(page)
+            serializer = AlumnoSerializerList(page, many=True)
+            response_data = self.get_paginated_response(serializer.data).data
+            cache.set(cache_key, response_data, timeout=60*15)  # Cache for 15 minutes
+            store_cache_key(self, cache_key)  # Almacenar la clave de cache
+            return Response(response_data, status=HTTP_200_OK)
 
-        # Devolver la respuesta con los resultados
-        return Response(data=data, status=HTTP_200_OK)
+        serializer = AlumnoSerializerList(queryset, many=True)
+        response_data = serializer.data
+        cache.set(cache_key, response_data, timeout=60*15)  # Cache for 15 minutes
+        store_cache_key(self, cache_key)  # Almacenar la clave de cache
+        return Response(response_data, status=HTTP_200_OK)
+    
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        if response.status_code == 201:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        if response.status_code in [200, 204]:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def partial_update(self, request, *args, **kwargs):
+        response = super().partial_update(request, *args, **kwargs)
+        if response.status_code in [200, 204]:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        response = super().destroy(request, *args, **kwargs)
+        if response.status_code == 204:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
 
 class AlumnoFamiliarViewSet(ModelViewSet):
     permission_classes = [
@@ -108,5 +121,3 @@ class InscribirAlumnoAPIView(APIView):
             return Response(result, status=HTTP_201_CREATED)
         
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-  

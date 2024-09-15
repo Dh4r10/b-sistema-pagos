@@ -1,15 +1,21 @@
 from .models import TipoUsuario, AuthUser, Modulos, Permisos
 from .serializers import TipoUsuarioSerializer, AuthUserSerializer, AuthUserListSerializer, ModulosSerializer, PermisosSerializer, UpdateProfilePictureSerializer
 from .pagination import PageNumberPagination
+from .filters import UserFilter
+from .lists import UserSerializerList
+from utils import get_cache_key, store_cache_key, invalidate_cache
 from rest_framework import viewsets, permissions, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework_simplejwt.tokens import RefreshToken
 from utils import send_email
 from django.utils import timezone
 from django.db import connection
+from django_filters.rest_framework import DjangoFilterBackend
+from django.core.cache import cache
 
 # Create your views here.
 class TipoUsuarioViewSet(viewsets.ModelViewSet):
@@ -27,39 +33,63 @@ class AuthUserViewSet(viewsets.ModelViewSet):
         permissions.AllowAny,
     ]
     serializer_class = AuthUserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserFilter
     pagination_class = PageNumberPagination
+    cache_prefix = "usuarios_"  # Usar un prefijo común para toda la cache de usuarios
+    cache_key_list = "usuarios_cache_keys"
 
-    def list(self, request):
-        # Obtener los parámetros de la solicitud GET
-        is_active = request.query_params.get('is_active')
-        tipo_usuario = request.query_params.get('tipo_usuario')
-        last_login = request.query_params.get('last_login')
-        buscador = request.query_params.get('buscador')
+    def list(self, request, *args, **kwargs):
+        cache_key = get_cache_key(self, request)
+        cached_response = cache.get(cache_key)
+        if cached_response:
+            return Response(cached_response, status=HTTP_200_OK)
+        
+        queryset = self.filter_queryset(self.get_queryset())
 
-        if is_active is not None:
-            is_active = True if is_active.lower() == 'true' else False
+        # Prefetch related data if necessary
+        queryset = queryset.select_related('id_tipo_usuario')
 
-        if buscador is not None:
-            buscador = '%' + buscador.upper() + '%'
+        # Ordenar por el ultimo ingreso del usuario
+        queryset = queryset.order_by('-last_login')
 
-        with connection.cursor() as cursor:
-            # Llamar al procedimiento almacenado
-            cursor.callproc('getAllUsers', [is_active, tipo_usuario, last_login, buscador])
-
-            keys = ['id', 'dni', 'usuario', 'tipo_usuario', 'email', 'last_login']
-
-            # Si el procedimiento devuelve resultados
-            results = cursor.fetchall()
-
-            data = [dict(zip(keys, row)) for row in results]
-
-        # Devolver la respuesta con los resultados
-        page = self.paginate_queryset(data)
+        page = self.paginate_queryset(queryset)
         if page is not None:
-            return self.get_paginated_response(page)
+            serializer = UserSerializerList(page, many=True)
+            response_data = self.get_paginated_response(serializer.data).data
+            cache.set(cache_key, response_data, timeout=60*15)  # Cache for 15 minutes
+            store_cache_key(self, cache_key)  # Almacenar la clave de cache
+            return Response(response_data, status=HTTP_200_OK)
 
-        # Devolver la respuesta con los resultados
-        return Response(data=data, status=status.HTTP_200_OK)
+        serializer = UserSerializerList(queryset, many=True)
+        response_data = serializer.data
+        cache.set(cache_key, response_data, timeout=60*15)  # Cache for 15 minutes
+        store_cache_key(self, cache_key)  # Almacenar la clave de cache
+        return Response(response_data, status=HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        if response.status_code == 201:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        if response.status_code in [200, 204]:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def partial_update(self, request, *args, **kwargs):
+        response = super().partial_update(request, *args, **kwargs)
+        if response.status_code in [200, 204]:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        response = super().destroy(request, *args, **kwargs)
+        if response.status_code == 204:
+            invalidate_cache(self)  # Invalida la cache si la operación fue exitosa
+        return response
 
 class PermisosViewSet(viewsets.ModelViewSet):
     queryset = Permisos.objects.all()
